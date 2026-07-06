@@ -408,5 +408,445 @@
     "flag": "flags/kurrikulumiya.png",
     "color": "#b1f100",
     "founded": "418 год"
+  },
+  {
+    "id": "1",
+    "name": "Гонсалилелдания",
+    "capital": "Неизвестно",
+    "leader": "Неизвестно",
+    "description": "NPC",
+    "flag": "empty.png",
+    "color": "#8B9DC3",
+    "isNPC": true
+  },
+  {
+    "id": "2",
+    "name": "Гонсалилелданиения",
+    "capital": "Неизвестно",
+    "leader": "Неизвестно",
+    "description": "NPC",
+    "flag": "empty.png",
+    "color": "#8B9DC3",
+    "isNPC": true
+  },
+  {
+    "id": "3",
+    "name": "Гонсалилендия",
+    "capital": "Неизвестно",
+    "leader": "Неизвестно",
+    "description": "NPC",
+    "flag": "empty.png",
+    "color": "#8B9DC3",
+    "isNPC": true
+  },
+  {
+    "id": "4",
+    "name": "Северная Гонсалилендия",
+    "capital": "Неизвестно",
+    "leader": "Неизвестно",
+    "description": "NPC",
+    "flag": "empty.png",
+    "color": "#8B9DC3",
+    "isNPC": true
+  },
+  {
+    "id": "5",
+    "name": "Гонсалиленд",
+    "capital": "Неизвестно",
+    "leader": "Неизвестно",
+    "description": "NPC",
+    "flag": "empty.png",
+    "color": "#8B9DC3",
+    "isNPC": true
+  },
+  {
+    "id": "6",
+    "name": "Северная Гонсалия",
+    "capital": "Неизвестно",
+    "leader": "Неизвестно",
+    "description": "NPC",
+    "flag": "empty.png",
+    "color": "#8B9DC3",
+    "isNPC": true
+  },
+  {
+    "id": "7",
+    "name": "Гонсалия",
+    "capital": "Неизвестно",
+    "leader": "Неизвестно",
+    "description": "NPC",
+    "flag": "empty.png",
+    "color": "#8B9DC3",
+    "isNPC": true
+  },
+  {
+    "id": "8",
+    "name": "Гонса",
+    "capital": "Неизвестно",
+    "leader": "Неизвестно",
+    "description": "NPC",
+    "flag": "empty.png",
+    "color": "#8B9DC3",
+    "isNPC": true
+  },
+  {
+    "id": "9",
+    "name": "Парор (настоящий)",
+    "capital": "Неизвестно",
+    "leader": "Неизвестно",
+    "description": "NPC",
+    "flag": "empty.png",
+    "color": "#8B9DC3",
+    "isNPC": true
+  },
+  {
+    "id": "10",
+    "name": "Парор (Тотург)",
+    "capital": "Неизвестно",
+    "leader": "Неизвестно",
+    "description": "NPC",
+    "flag": "empty.png",
+    "color": "#8B9DC3",
+    "isNPC": true
+  },
+  {
+    "id": "11",
+    "name": "Северисткий Норсвед",
+    "capital": "Неизвестно",
+    "leader": "Неизвестно",
+    "description": "NPC",
+    "flag": "empty.png",
+    "color": "#8B9DC3",
+    "isNPC": true
+  },
+  {
+    "id": "12",
+    "name": "Димития",
+    "capital": "Неизвестно",
+    "leader": "Неизвестно",
+    "description": "NPC",
+    "flag": "empty.png",
+    "color": "#8B9DC3",
+    "isNPC": true
+  },
+  {
+    "id": "13",
+    "name": "Чкокрия",
+    "capital": "Неизвестно",
+    "leader": "Неизвестно",
+    "description": "NPC",
+    "flag": "empty.png",
+    "color": "#8B9DC3",
+    "isNPC": true
+  },
+  {
+    "id": "14",
+    "name": "Государство Будай",
+    "capital": "Неизвестно",
+    "leader": "Неизвестно",
+    "description": "NPC",
+    "flag": "empty.png",
+    "color": "#8B9DC3",
+    "isNPC": true
+  },
+  {
+    "id": "15",
+    "name": "Вегерское Государство",
+    "capital": "Неизвестно",
+    "leader": "Неизвестно",
+    "description": "NPC",
+    "flag": "empty.png",
+    "color": "#8B9DC3",
+    "isNPC": true
+  },
+  {
+    "id": "16",
+    "name": "Джемийская Вильнуска",
+    "capital": "Неизвестно",
+    "leader": "Неизвестно",
+    "description": "NPC",
+    "flag": "empty.png",
+    "color": "#8B9DC3",
+    "isNPC": true
+  },
+  {
+    "id": "17",
+    "name": "Новое Вильну",
+    "capital": "Неизвестно",
+    "leader": "Неизвестно",
+    "description": "NPC",
+    "flag": "empty.png",
+    "color": "#8B9DC3",
+    "isNPC": true
+  },
+  {
+    "id": "18",
+    "name": "Сеймиятаунский Антитеррористический Указ",
+    "capital": "Неизвестно",
+    "leader": "Неизвестно",
+    "description": "NPC",
+    "flag": "empty.png",
+    "color": "#8B9DC3",
+    "isNPC": true
+  },
+  {
+    "id": "19",
+    "name": "Северная Мария",
+    "capital": "Неизвестно",
+    "leader": "Неизвестно",
+    "description": "NPC",
+    "flag": "empty.png",
+    "color": "#8B9DC3",
+    "isNPC": true
+  },
+  {
+    "id": "20",
+    "name": "Южная Мария",
+    "capital": "Неизвестно",
+    "leader": "Неизвестно",
+    "description": "NPC",
+    "flag": "empty.png",
+    "color": "#8B9DC3",
+    "isNPC": true
+  },
+  {
+    "id": "21",
+    "name": "Государство Кульба",
+    "capital": "Неизвестно",
+    "leader": "Неизвестно",
+    "description": "NPC",
+    "flag": "empty.png",
+    "color": "#8B9DC3",
+    "isNPC": true
+  },
+  {
+    "id": "22",
+    "name": "Бульварская Республика",
+    "capital": "Неизвестно",
+    "leader": "Неизвестно",
+    "description": "NPC",
+    "flag": "empty.png",
+    "color": "#8B9DC3",
+    "isNPC": true
+  },
+  {
+    "id": "23",
+    "name": "Новая Республика Дакбачка",
+    "capital": "Неизвестно",
+    "leader": "Неизвестно",
+    "description": "NPC",
+    "flag": "empty.png",
+    "color": "#8B9DC3",
+    "isNPC": true
+  },
+  {
+    "id": "24",
+    "name": "Алексиевско-Дакбаченское Королевство",
+    "capital": "Неизвестно",
+    "leader": "Неизвестно",
+    "description": "NPC",
+    "flag": "empty.png",
+    "color": "#8B9DC3",
+    "isNPC": true
+  },
+  {
+    "id": "25",
+    "name": "Червания",
+    "capital": "Неизвестно",
+    "leader": "Неизвестно",
+    "description": "NPC",
+    "flag": "empty.png",
+    "color": "#8B9DC3",
+    "isNPC": true
+  },
+  {
+    "id": "26",
+    "name": "Блуйское Анархическое Общество",
+    "capital": "Неизвестно",
+    "leader": "Неизвестно",
+    "description": "NPC",
+    "flag": "empty.png",
+    "color": "#8B9DC3",
+    "isNPC": true
+  },
+  {
+    "id": "27",
+    "name": "Таджа",
+    "capital": "Неизвестно",
+    "leader": "Неизвестно",
+    "description": "NPC",
+    "flag": "empty.png",
+    "color": "#8B9DC3",
+    "isNPC": true
+  },
+  {
+    "id": "28",
+    "name": "Государство Слобивия",
+    "capital": "Неизвестно",
+    "leader": "Неизвестно",
+    "description": "NPC",
+    "flag": "empty.png",
+    "color": "#8B9DC3",
+    "isNPC": true
+  },
+  {
+    "id": "29",
+    "name": "Биринвегер (Президент)",
+    "capital": "Неизвестно",
+    "leader": "Неизвестно",
+    "description": "NPC",
+    "flag": "empty.png",
+    "color": "#8B9DC3",
+    "isNPC": true
+  },
+  {
+    "id": "30",
+    "name": "Биринвегер (Парламент)",
+    "capital": "Неизвестно",
+    "leader": "Неизвестно",
+    "description": "NPC",
+    "flag": "empty.png",
+    "color": "#8B9DC3",
+    "isNPC": true
+  },
+  {
+    "id": "31",
+    "name": "Борийский Режим",
+    "capital": "Неизвестно",
+    "leader": "Неизвестно",
+    "description": "NPC",
+    "flag": "empty.png",
+    "color": "#8B9DC3",
+    "isNPC": true
+  },
+  {
+    "id": "32",
+    "name": "Мойвийское восстание",
+    "capital": "Неизвестно",
+    "leader": "Неизвестно",
+    "description": "NPC",
+    "flag": "empty.png",
+    "color": "#8B9DC3",
+    "isNPC": true
+  },
+  {
+    "id": "33",
+    "name": "Эрадийская Республика",
+    "capital": "Неизвестно",
+    "leader": "Неизвестно",
+    "description": "NPC",
+    "flag": "empty.png",
+    "color": "#8B9DC3",
+    "isNPC": true
+  },
+  {
+    "id": "34",
+    "name": "Свободная Макария",
+    "capital": "Неизвестно",
+    "leader": "Неизвестно",
+    "description": "NPC",
+    "flag": "empty.png",
+    "color": "#8B9DC3",
+    "isNPC": true
+  },
+  {
+    "id": "35",
+    "name": "Зобя",
+    "capital": "Неизвестно",
+    "leader": "Неизвестно",
+    "description": "NPC",
+    "flag": "empty.png",
+    "color": "#8B9DC3",
+    "isNPC": true
+  },
+  {
+    "id": "301",
+    "name": "Биринвегер",
+    "capital": "Неизвестно",
+    "leader": "Неизвестно",
+    "description": "NPC",
+    "flag": "empty.png",
+    "color": "#8B9DC3",
+    "isNPC": true
+  },
+  {
+    "id": "302",
+    "name": "Биринвегер",
+    "capital": "Неизвестно",
+    "leader": "Неизвестно",
+    "description": "NPC",
+    "flag": "empty.png",
+    "color": "#8B9DC3",
+    "isNPC": true
+  },
+  {
+    "id": "303",
+    "name": "Биринвегер",
+    "capital": "Неизвестно",
+    "leader": "Неизвестно",
+    "description": "NPC",
+    "flag": "empty.png",
+    "color": "#8B9DC3",
+    "isNPC": true
+  },
+  {
+    "id": "304",
+    "name": "Биринвегер",
+    "capital": "Неизвестно",
+    "leader": "Неизвестно",
+    "description": "NPC",
+    "flag": "empty.png",
+    "color": "#8B9DC3",
+    "isNPC": true
+  },
+  {
+    "id": "305",
+    "name": "Биринвегер",
+    "capital": "Неизвестно",
+    "leader": "Неизвестно",
+    "description": "NPC",
+    "flag": "empty.png",
+    "color": "#8B9DC3",
+    "isNPC": true
+  },
+  {
+    "id": "306",
+    "name": "Биринвегер",
+    "capital": "Неизвестно",
+    "leader": "Неизвестно",
+    "description": "NPC",
+    "flag": "empty.png",
+    "color": "#8B9DC3",
+    "isNPC": true
+  },
+  {
+    "id": "307",
+    "name": "Биринвегер",
+    "capital": "Неизвестно",
+    "leader": "Неизвестно",
+    "description": "NPC",
+    "flag": "empty.png",
+    "color": "#8B9DC3",
+    "isNPC": true
+  },
+  {
+    "id": "291",
+    "name": "Биринвегер-Парламент",
+    "capital": "Неизвестно",
+    "leader": "Неизвестно",
+    "description": "NPC",
+    "flag": "empty.png",
+    "color": "#8B9DC3",
+    "isNPC": true
+  },
+  {
+    "id": "292",
+    "name": "Биринвегер-Парламент",
+    "capital": "Неизвестно",
+    "leader": "Неизвестно",
+    "description": "NPC",
+    "flag": "empty.png",
+    "color": "#8B9DC3",
+    "isNPC": true
   }
 ]
