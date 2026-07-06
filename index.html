@@ -243,71 +243,86 @@
 
     <!-- Логика модальных окон -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // ==========================================
-            // Модалка "Информация"
-            // ==========================================
-            const infoBtn = document.getElementById('infoButton');
-            const infoModal = document.getElementById('info-modal');
-            const infoModalClose = infoModal.querySelector('.info-modal-close');
-            
-            infoBtn.addEventListener('click', function() {
+    document.addEventListener('DOMContentLoaded', function() {
+        // ==========================================
+        // Модалка "Информация"
+        // ==========================================
+        const infoBtn = document.getElementById('infoButton');
+        const infoModal = document.getElementById('info-modal');
+        const infoModalClose = infoModal.querySelector('.info-modal-close');
+        
+        infoBtn.addEventListener('click', function() {
+            infoModal.style.display = 'flex';
+            requestAnimationFrame(() => {
                 infoModal.classList.add('active');
-                document.body.style.overflow = 'hidden';
             });
-            
-            function closeInfoModal() {
-                infoModal.classList.remove('active');
-                document.body.style.overflow = '';
-            }
-            
-            infoModalClose.addEventListener('click', closeInfoModal);
-            infoModal.addEventListener('click', function(e) {
-                if (e.target === infoModal) closeInfoModal();
-            });
-
-            // ==========================================
-            // Секретное изображение
-            // ==========================================
-            const secretBtn = document.getElementById('secretButton');
-            const secretOverlay = document.getElementById('secret-overlay');
-            const secretClose = document.getElementById('secret-close');
-            const secretImage = document.getElementById('secret-image');
-            
-            secretBtn.addEventListener('click', function() {
-                secretOverlay.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            });
-            
-            function closeSecretOverlay() {
-                secretOverlay.classList.remove('active');
-                document.body.style.overflow = '';
-            }
-            
-            secretClose.addEventListener('click', closeSecretOverlay);
-            secretOverlay.addEventListener('click', function(e) {
-                if (e.target === secretOverlay) closeSecretOverlay();
-            });
-
-            // Обработка ошибки загрузки секретного изображения
-            secretImage.addEventListener('error', function() {
-                this.src = 'assets/logo.png';
-            });
-
-            // ==========================================
-            // Закрытие по Escape (для обоих)
-            // ==========================================
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') {
-                    if (secretOverlay.classList.contains('active')) {
-                        closeSecretOverlay();
-                    } else if (infoModal.classList.contains('active')) {
-                        closeInfoModal();
-                    }
-                }
-            });
+            document.body.style.overflow = 'hidden';
         });
-    </script>
+        
+        function closeInfoModal() {
+            infoModal.classList.remove('active');
+            document.body.style.overflow = '';
+            setTimeout(() => {
+                if (!infoModal.classList.contains('active')) {
+                    infoModal.style.display = 'none';
+                }
+            }, 300);
+        }
+        
+        infoModalClose.addEventListener('click', closeInfoModal);
+        infoModal.addEventListener('click', function(e) {
+            if (e.target === infoModal) closeInfoModal();
+        });
+
+        // ==========================================
+        // Секретное изображение
+        // ==========================================
+        const secretBtn = document.getElementById('secretButton');
+        const secretOverlay = document.getElementById('secret-overlay');
+        const secretClose = document.getElementById('secret-close');
+        const secretImage = document.getElementById('secret-image');
+        
+        secretBtn.addEventListener('click', function() {
+            secretOverlay.style.display = 'flex';
+            requestAnimationFrame(() => {
+                secretOverlay.classList.add('active');
+            });
+            document.body.style.overflow = 'hidden';
+        });
+        
+        function closeSecretOverlay() {
+            secretOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+            setTimeout(() => {
+                if (!secretOverlay.classList.contains('active')) {
+                    secretOverlay.style.display = 'none';
+                }
+            }, 300);
+        }
+        
+        secretClose.addEventListener('click', closeSecretOverlay);
+        secretOverlay.addEventListener('click', function(e) {
+            if (e.target === secretOverlay) closeSecretOverlay();
+        });
+
+        secretImage.addEventListener('error', function() {
+            this.src = 'assets/logo.png';
+        });
+
+        // ==========================================
+        // Закрытие по Escape
+        // ==========================================
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                if (secretOverlay.classList.contains('active')) {
+                    closeSecretOverlay();
+                } else if (infoModal.classList.contains('active')) {
+                    closeInfoModal();
+                }
+            }
+        });
+    });
+</script>
 
     <!-- Стили -->
     <style>
