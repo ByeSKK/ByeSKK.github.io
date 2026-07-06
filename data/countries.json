@@ -205,7 +205,7 @@
     "id": "zemlya",
     "name": "Земля",
     "capital": "Неизвестно",
-    "leader": "Дерзкий KLYV",
+    "leader": "Владимир Дугин Виссарионович",
     "ideology": "Древестный пацифизм",
     "economy": "Отсутсвует",
     "alliance": "Отсутсвует",
@@ -845,6 +845,16 @@
     "capital": "Неизвестно",
     "leader": "Неизвестно",
     "description": "NPC",
+    "flag": "empty.png",
+    "color": "#8B9DC3",
+    "isNPC": true
+  },
+  {
+    "id": "fog",
+    "name": "Туман",
+    "capital": "Отсутсвует",
+    "leader": "Отсутсвует",
+    "description": "Неизвестно никому, что происходит внутри тумана.",
     "flag": "empty.png",
     "color": "#8B9DC3",
     "isNPC": true
