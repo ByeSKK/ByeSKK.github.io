@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Интерактивная карта мира Рантака — исследуйте страны, их историю и культуру">
+    <meta name="theme-color" content="#4a7cf7">
+    
+    <title>Рантака</title>
+
+    <!-- Preload критических ресурсов -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..800&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/map.css">
+    <link rel="stylesheet" href="css/panel.css">
+    <link rel="stylesheet" href="css/animations.css">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+</head>
+
+<body>
+
+    <!-- ===================================================== -->
+    <!-- Экран загрузки -->
+    <!-- ===================================================== -->
+
+    <div id="loading-screen" role="status" aria-label="Загрузка приложения">
+        <div class="loader" aria-hidden="true"></div>
+        <div class="brand">
+            <img src="assets/logo.png" alt="Рантака" class="loading-logo" aria-hidden="true">
+            <h1>Рантака</h1>
+            <span class="badge">beta</span>
+        </div>
+        <p>Загрузка карты мира...</p>
+    </div>
+
+    <!-- ===================================================== -->
+    <!-- Основное приложение -->
+    <!-- ===================================================== -->
+
+    <div id="app">
+
+        <!-- ========================================== -->
+        <!-- Верхняя панель навигации -->
+        <!-- ========================================== -->
+
+        <header id="topbar" role="banner">
+            <div class="logo" aria-label="Рантака — главная">
+                <img src="assets/logo.png" alt="Логотип Рантака" class="logo-icon" aria-hidden="true">
+                <span class="logo-text">Рантака</span>
+                <span class="badge">beta</span>
+            </div>
+
+            <div class="search-box" role="search">
+                <input
+                    id="searchInput"
+                    type="text"
+                    placeholder="Поиск страны..."
+                    aria-label="Поиск стран мира"
+                    autocomplete="off"
+                    spellcheck="false"
+                >
+                <kbd class="search-shortcut">⌘K</kbd>
+            </div>
+
+            <div class="top-buttons">
+                <button id="resetZoom" title="Сбросить масштаб" aria-label="Сбросить масштаб карты">
+                    <span aria-hidden="true">⟲</span>
+                    <span class="btn-label">Центр</span>
+                </button>
+
+                <button id="fullscreenButton" title="Полный экран" aria-label="Переключить полноэкранный режим">
+                    <span aria-hidden="true">⛶</span>
+                    <span class="btn-label">На весь экран</span>
+                </button>
+
+                <button id="themeToggle" title="Переключить тему" aria-label="Переключить светлую/тёмную тему">
+                    <span aria-hidden="true" class="theme-icon">🌙</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- ========================================== -->
+        <!-- Основная область -->
+        <!-- ========================================== -->
+
+        <main id="main" role="main">
+
+            <!-- ====================================== -->
+            <!-- Контейнер карты -->
+            <!-- ====================================== -->
+
+            <section id="map-container" aria-label="Интерактивная карта мира">
+                <div id="zoom-container">
+                    <div id="svg-container">
+                        <!-- SVG карта загружается динамически через JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Подсказка для пользователя -->
+                <div class="map-hint" aria-hidden="true">
+                    <span>🖱 Кликните по стране для информации</span>
+                </div>
+            </section>
+
+            <!-- ====================================== -->
+            <!-- Панель информации о стране -->
+            <!-- ====================================== -->
+
+            <aside id="country-panel" role="complementary" aria-label="Информация о стране">
+                <div class="panel-header">
+                    <h2>Информация о стране</h2>
+                    <button class="close-btn" id="closePanel" aria-label="Закрыть панель">
+                        <span aria-hidden="true">✕</span>
+                    </button>
+                </div>
+
+                <div class="panel-body">
+                    <!-- Плейсхолдер -->
+                    <div id="country-placeholder">
+                        <div class="placeholder-icon" aria-hidden="true">
+                            <img src="assets/logo.png" alt="" class="placeholder-logo">
+                        </div>
+                        <h3>Выберите государство</h3>
+                        <p>Нажмите на любую страну на карте, чтобы увидеть подробную информацию</p>
+                    </div>
+
+                    <!-- Информация о стране (скрыта по умолчанию) -->
+                    <div id="country-info" style="display:none;" role="article">
+                        <div class="flag-wrapper">
+                            <img id="countryFlag" src="" alt="Флаг страны" loading="lazy">
+                        </div>
+
+                        <h2 id="countryName"></h2>
+
+                        <div class="info-grid">
+                        <div class="info-row">
+                        <span class="label">🏛 Столица</span>
+                        <span class="value" id="countryCapital">—</span>
+                    </div>
+                        <div class="info-row">
+                <span class="label">📜 Идеология</span>
+                <span class="value" id="countryIdeology">—</span>
+            </div>
+            <div class="info-row">
+                <span class="label">👥 Население</span>
+                <span class="value" id="countryPopulation">—</span>
+            </div>
+                <div class="info-row">
+                <span class="label">🤝 Альянс</span>
+                <span class="value" id="countryAlliance">—</span>
+        </div>
+    </div>
+
+    <div class="description-section">
+        <h3>Описание</h3>
+        <p id="countryDescription"></p>
+    </div>
+</div>
+
+                        <div class="description-section">
+                            <h3>Описание</h3>
+                            <p id="countryDescription"></p>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+        </main>
+
+        <!-- ========================================== -->
+        <!-- Элементы управления картой -->
+        <!-- ========================================== -->
+
+        <div id="map-controls" role="toolbar" aria-label="Управление картой">
+            <button id="zoomIn" aria-label="Приблизить карту" title="Приблизить">
+                <span aria-hidden="true">+</span>
+            </button>
+            <button id="zoomOut" aria-label="Отдалить карту" title="Отдалить">
+                <span aria-hidden="true">−</span>
+            </button>
+            <button id="resetView" aria-label="Сбросить вид" title="Сбросить вид">
+                <span aria-hidden="true">⟲</span>
+            </button>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- Нижняя строка статуса -->
+        <!-- ========================================== -->
+
+        <footer id="statusbar" role="contentinfo">
+            <div class="status-group">
+                <span class="status-item">
+                    <span class="status-dot" aria-hidden="true"></span>
+                    Страна:
+                    <strong id="selectedCountry">Не выбрана</strong>
+                </span>
+            </div>
+
+            <div class="status-group">
+                <span class="status-item">
+                    Масштаб:
+                    <strong id="zoomValue">100%</strong>
+                </span>
+                <span class="status-item">
+                    <span aria-hidden="true">📍</span>
+                    <span id="coordinates">0, 0</span>
+                </span>
+            </div>
+
+            <div class="status-group">
+                <span class="status-item">
+                    <img src="assets/logo.png" alt="" class="statusbar-logo" aria-hidden="true">
+                    Рантака
+                    <span class="version">v2.0</span>
+                </span>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- ===================================================== -->
+    <!-- JavaScript -->
+    <!-- ===================================================== -->
+
+    <!-- Утилиты и ядро -->
+    <script src="js/utils.js"></script>
+    <script src="js/data.js"></script>
+    
+    <!-- Модули функциональности -->
+    <script src="js/panel.js"></script>
+    <script src="js/search.js"></script>
+    <script src="js/zoom.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/theme.js"></script>
+    
+    <!-- Инициализация приложения -->
+    <script src="js/app.js"></script>
+
+    <!-- Service Worker для кеширования (опционально) -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            // navigator.serviceWorker.register('/sw.js');
+        }
+    </script>
+
+</body>
+</html>
