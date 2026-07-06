@@ -484,83 +484,104 @@ const PanelManager = (() => {
     // ==========================================
 
     function _injectStyles() {
-        if (document.getElementById('panel-manager-styles')) return;
-
-        const styles = document.createElement('style');
-        styles.id = 'panel-manager-styles';
-        styles.textContent = `
-            #country-panel{position:relative;width:var(--panel-width,380px);height:100%;background:var(--color-bg-secondary);border-left:1px solid var(--color-border);overflow-y:auto;overflow-x:hidden;flex-shrink:0;z-index:10;will-change:transform}
-            #country-panel .panel-header{position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:var(--color-bg-glass,rgba(255,255,255,0.8));border-bottom:1px solid var(--color-border-light);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);gap:12px}
-            #country-panel .panel-header h2{font-size:16px;font-weight:700;color:var(--color-text-primary);margin:0;flex-shrink:0}
-            .panel-history-btn-header{padding:5px 14px;background:var(--color-bg-tertiary);border:1px solid var(--color-border);border-radius:6px;color:var(--color-text-secondary);font-size:13px;font-weight:500;cursor:pointer;transition:all 0.2s;white-space:nowrap;flex-shrink:0}
-            .panel-history-btn-header:hover{background:var(--color-accent-light);color:var(--color-accent);border-color:var(--color-accent)}
-            #country-panel .panel-body{padding:16px 20px}
-            #country-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 20px;color:var(--color-text-muted)}
-            #country-placeholder .placeholder-icon{font-size:56px;margin-bottom:20px;opacity:0.5;animation:float 3s ease-in-out infinite}
-            #country-placeholder h3{font-size:18px;font-weight:700;color:var(--color-text-primary);margin-bottom:8px}
-            #country-placeholder p{font-size:14px;line-height:1.6}
-            @keyframes float{0%,100%{transform:translateY(0px)}50%{transform:translateY(-8px)}}
-            #country-info{animation:fadeSlideIn 0.3s ease}
-            @keyframes fadeSlideIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-            
-            .country-header{display:flex;align-items:flex-start;gap:14px;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--color-border-light)}
-            #countryFlag{width:60px;height:40px;object-fit:cover;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,0.1);border:1px solid var(--color-border-light);flex-shrink:0;margin:0;cursor:pointer;transition:transform 0.15s ease,box-shadow 0.15s ease}
-            #countryFlag:hover{transform:scale(1.08);box-shadow:0 2px 8px rgba(0,0,0,0.18)}
-            #countryFlag:active{transform:scale(0.95)}
-            .country-header-info{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center}
-            #countryName{font-size:18px;font-weight:700;color:var(--color-text-primary);line-height:1.2;letter-spacing:-0.2px;margin:0 0 4px}
-            #countryLeader{font-size:13px;font-weight:400;color:var(--color-text-secondary);line-height:1.3;margin:0}
-            
-            #country-info p{margin-bottom:10px;display:flex;align-items:flex-start;gap:8px}
-            #country-info p strong{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--color-text-muted);min-width:90px;flex-shrink:0;display:inline-block;margin:0;padding-top:1px}
-            #country-info p span{font-size:13px;font-weight:500;color:var(--color-text-primary);line-height:1.5;flex:1}
-            #countryDescription{font-size:13px;line-height:1.7;color:var(--color-text-secondary);margin-top:2px;display:block!important}
-            
-            /* Модалка флага */
-            .flag-modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:9999;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:opacity 0.25s ease,visibility 0.25s ease;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
-            .flag-modal-overlay.active{opacity:1;visibility:visible}
-            .flag-modal-image{max-width:85vw;max-height:80vh;object-fit:contain;border-radius:8px;box-shadow:0 8px 32px rgba(0,0,0,0.4);transform:scale(0.9);transition:transform 0.25s ease}
-            .flag-modal-overlay.active .flag-modal-image{transform:scale(1)}
-            .flag-modal-close{position:absolute;top:20px;right:20px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);border-radius:50%;color:white;font-size:24px;cursor:pointer;transition:all 0.2s;line-height:1}
-            .flag-modal-close:hover{background:rgba(239,68,68,0.8);border-color:rgba(239,68,68,0.8);transform:rotate(90deg)}
-            
-            .panel-history-container{padding-top:8px}
-            .panel-back-btn{display:inline-flex;align-items:center;padding:6px 12px;background:transparent;border:1px solid var(--color-border);border-radius:6px;color:var(--color-text-secondary);font-size:13px;font-weight:500;cursor:pointer;transition:all 0.2s;margin-bottom:14px}
-            .panel-back-btn:hover{background:var(--color-accent-light);color:var(--color-accent);border-color:var(--color-accent)}
-            .history-header{margin-bottom:12px}
-            .history-title{font-size:17px;font-weight:700;color:var(--color-text-primary);margin:0 0 4px}
-            .history-search{width:100%;padding:8px 12px;background:var(--color-bg-tertiary);border:1px solid var(--color-border);border-radius:8px;font-size:13px;color:var(--color-text-primary);outline:none;transition:all 0.2s;margin-bottom:10px;box-sizing:border-box}
-            .history-search:focus{border-color:var(--color-accent);box-shadow:0 0 0 3px var(--color-accent-light)}
-            .history-search::placeholder{color:var(--color-text-muted)}
-            .history-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
-            .history-tag{padding:4px 12px;background:var(--color-bg-tertiary);border:1px solid var(--color-border);border-radius:20px;font-size:12px;font-weight:500;color:var(--color-text-secondary);cursor:pointer;transition:all 0.15s;white-space:nowrap}
-            .history-tag:hover{background:var(--color-accent-light);color:var(--color-accent)}
-            .history-tag.active{background:var(--color-accent);color:white;border-color:var(--color-accent)}
-            .history-list{display:flex;flex-direction:column;gap:10px}
-            .history-event{background:var(--color-bg-tertiary);border-radius:8px;padding:12px 14px;border-left:2px solid var(--color-border);transition:all 0.15s}
-            .history-event:hover{border-left-color:var(--color-accent);background:var(--color-accent-subtle)}
-            .history-event-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;flex-wrap:wrap;gap:6px}
-            .history-event-type{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.3px}
-            .type-political{background:rgba(59,130,246,0.12);color:#3b82f6}
-            .type-economic{background:rgba(16,185,129,0.12);color:#10b981}
-            .type-military{background:rgba(239,68,68,0.12);color:#ef4444}
-            .type-technological{background:rgba(139,92,246,0.12);color:#8b5cf6}
-            .type-diplomatic{background:rgba(245,158,11,0.12);color:#d97706}
-            .type-other{background:rgba(107,114,128,0.12);color:#6b7280}
-            .history-event-date{font-size:11px;color:var(--color-text-muted)}
-            .history-event-title{font-size:14px;font-weight:600;color:var(--color-text-primary);margin:0 0 4px;line-height:1.3}
-            .history-event-desc{font-size:12px;color:var(--color-text-secondary);line-height:1.6;margin:0 0 4px}
-            .history-badge-major{display:inline-block;padding:2px 6px;background:rgba(245,158,11,0.15);color:#d97706;border-radius:3px;font-size:10px;font-weight:600}
-            .history-loading{display:flex;flex-direction:column;align-items:center;padding:40px 20px;gap:10px;color:var(--color-text-muted)}
-            .history-spinner{width:28px;height:28px;border:2px solid var(--color-border);border-top-color:var(--color-accent);border-radius:50%;animation:spin 0.8s linear infinite}
-            @keyframes spin{to{transform:rotate(360deg)}}
-            .history-empty{display:flex;flex-direction:column;align-items:center;padding:30px 20px;color:var(--color-text-muted);text-align:center;gap:4px;font-size:14px}
-            .history-empty span{font-size:12px;opacity:0.6}
-            @media(max-width:768px){#country-panel{position:fixed;top:var(--topbar-height,56px);right:0;bottom:var(--statusbar-height,36px);width:100%;max-width:400px;box-shadow:-8px 0 24px rgba(0,0,0,0.15);transform:translateX(100%)}.flag-modal-image{max-width:95vw;max-height:70vh}}
-        `;
-
-        document.head.appendChild(styles);
+    if (document.getElementById('panel-manager-styles')) {
+        document.getElementById('panel-manager-styles').remove();
     }
+
+    const styles = document.createElement('style');
+    styles.id = 'panel-manager-styles';
+    styles.textContent = `
+        #country-panel{position:relative;width:var(--panel-width,380px);height:100%;background:var(--color-bg-secondary);border-left:1px solid var(--color-border);overflow-y:auto;overflow-x:hidden;flex-shrink:0;z-index:10;will-change:transform}
+        #country-panel .panel-header{position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:var(--color-bg-glass,rgba(255,255,255,0.8));border-bottom:1px solid var(--color-border-light);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);gap:12px}
+        #country-panel .panel-header h2{font-size:16px;font-weight:700;color:var(--color-text-primary);margin:0;flex-shrink:0}
+        .panel-history-btn-header{padding:6px 14px;background:var(--color-bg-tertiary);border:1px solid var(--color-border);border-radius:6px;color:var(--color-text-secondary);font-size:13px;font-weight:500;cursor:pointer;transition:all 0.2s;white-space:nowrap;flex-shrink:0;margin-left:auto}
+        .panel-history-btn-header:hover{background:var(--color-accent-light);color:var(--color-accent);border-color:var(--color-accent)}
+        #country-panel .panel-body{padding:18px 22px}
+        
+        /* Плейсхолдер */
+        #country-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 20px;color:var(--color-text-muted)}
+        #country-placeholder .placeholder-icon{font-size:56px;margin-bottom:20px;opacity:0.5;animation:float 3s ease-in-out infinite}
+        #country-placeholder h3{font-size:18px;font-weight:700;color:var(--color-text-primary);margin-bottom:8px}
+        #country-placeholder p{font-size:14px;line-height:1.6}
+        @keyframes float{0%,100%{transform:translateY(0px)}50%{transform:translateY(-8px)}}
+        
+        #country-info{animation:fadeSlideIn 0.3s ease}
+        @keyframes fadeSlideIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+        
+        /* Шапка: флаг + название/правитель */
+        .country-header{display:flex;align-items:center;gap:14px;margin-bottom:18px;padding-bottom:16px;border-bottom:1px solid var(--color-border-light)}
+        #countryFlag{width:72px;height:48px;object-fit:cover;border-radius:6px;box-shadow:0 2px 6px rgba(0,0,0,0.1);border:1px solid var(--color-border);flex-shrink:0;margin:0;cursor:pointer;transition:transform 0.15s ease,box-shadow 0.15s ease}
+        #countryFlag:hover{transform:scale(1.06);box-shadow:0 3px 10px rgba(0,0,0,0.18)}
+        #countryFlag:active{transform:scale(0.96)}
+        .country-header-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+        #countryName{font-size:20px;font-weight:800;color:var(--color-text-primary);line-height:1.2;letter-spacing:-0.3px;margin:0}
+        #countryLeader{font-size:14px;font-weight:500;color:var(--color-text-secondary);line-height:1.3;margin:0}
+        
+        /* Поля информации */
+        .info-fields{display:flex;flex-direction:column;gap:0;margin-top:2px}
+        .info-fields p{display:flex;align-items:baseline;padding:11px 0;margin:0;border-bottom:1px solid var(--color-border-light);gap:10px}
+        .info-fields p:last-child{border-bottom:none;padding-bottom:0}
+        .info-fields p strong{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--color-text-muted);min-width:100px;flex-shrink:0;line-height:1.4}
+        .info-fields p span{font-size:15px;font-weight:500;color:var(--color-text-primary);line-height:1.4;flex:1}
+        
+        /* Описание */
+        .description-section{margin-top:18px;padding-top:16px;border-top:1px solid var(--color-border-light)}
+        .description-section h3{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--color-text-muted);margin:0 0 8px}
+        #countryDescription{font-size:14px;line-height:1.7;color:var(--color-text-secondary);margin:0}
+        
+        /* Модалка флага */
+        .flag-modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.75);z-index:9999;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:opacity 0.25s ease,visibility 0.25s ease;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+        .flag-modal-overlay.active{opacity:1;visibility:visible}
+        .flag-modal-image{max-width:85vw;max-height:80vh;object-fit:contain;border-radius:8px;box-shadow:0 8px 32px rgba(0,0,0,0.4);transform:scale(0.9);transition:transform 0.25s ease}
+        .flag-modal-overlay.active .flag-modal-image{transform:scale(1)}
+        .flag-modal-close{position:absolute;top:20px;right:20px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);border-radius:50%;color:white;font-size:24px;cursor:pointer;transition:all 0.2s;line-height:1}
+        .flag-modal-close:hover{background:rgba(239,68,68,0.8);border-color:rgba(239,68,68,0.8);transform:rotate(90deg)}
+        
+        /* История */
+        .panel-history-container{padding-top:4px}
+        .panel-back-btn{display:inline-flex;align-items:center;padding:7px 14px;background:transparent;border:1px solid var(--color-border);border-radius:6px;color:var(--color-text-secondary);font-size:13px;font-weight:500;cursor:pointer;transition:all 0.2s;margin-bottom:14px}
+        .panel-back-btn:hover{background:var(--color-accent-light);color:var(--color-accent);border-color:var(--color-accent)}
+        .history-header{margin-bottom:12px}
+        .history-title{font-size:18px;font-weight:700;color:var(--color-text-primary);margin:0 0 4px}
+        .history-search{width:100%;padding:9px 14px;background:var(--color-bg-tertiary);border:1px solid var(--color-border);border-radius:8px;font-size:13px;color:var(--color-text-primary);outline:none;transition:all 0.2s;margin-bottom:12px;box-sizing:border-box}
+        .history-search:focus{border-color:var(--color-accent);box-shadow:0 0 0 3px var(--color-accent-light)}
+        .history-search::placeholder{color:var(--color-text-muted)}
+        .history-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+        .history-tag{padding:5px 12px;background:var(--color-bg-tertiary);border:1px solid var(--color-border);border-radius:20px;font-size:12px;font-weight:500;color:var(--color-text-secondary);cursor:pointer;transition:all 0.15s;white-space:nowrap}
+        .history-tag:hover{background:var(--color-accent-light);color:var(--color-accent)}
+        .history-tag.active{background:var(--color-accent);color:white;border-color:var(--color-accent)}
+        .history-list{display:flex;flex-direction:column;gap:12px}
+        .history-event{background:var(--color-bg-tertiary);border-radius:8px;padding:14px 16px;border-left:2px solid var(--color-border);transition:all 0.15s}
+        .history-event:hover{border-left-color:var(--color-accent);background:var(--color-accent-subtle)}
+        .history-event-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:6px}
+        .history-event-type{display:inline-block;padding:3px 10px;border-radius:4px;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.4px}
+        .type-political{background:rgba(59,130,246,0.15);color:#3b82f6}
+        .type-economic{background:rgba(16,185,129,0.15);color:#10b981}
+        .type-military{background:rgba(239,68,68,0.15);color:#ef4444}
+        .type-technological{background:rgba(139,92,246,0.15);color:#8b5cf6}
+        .type-diplomatic{background:rgba(245,158,11,0.15);color:#d97706}
+        .type-other{background:rgba(107,114,128,0.15);color:#6b7280}
+        .history-event-date{font-size:12px;color:var(--color-text-muted)}
+        .history-event-title{font-size:15px;font-weight:600;color:var(--color-text-primary);margin:0 0 6px;line-height:1.3}
+        .history-event-desc{font-size:13px;color:var(--color-text-secondary);line-height:1.6;margin:0 0 6px}
+        .history-badge-major{display:inline-block;padding:2px 8px;background:rgba(245,158,11,0.15);color:#d97706;border-radius:3px;font-size:10px;font-weight:600}
+        .history-loading{display:flex;flex-direction:column;align-items:center;padding:40px 20px;gap:10px;color:var(--color-text-muted)}
+        .history-spinner{width:28px;height:28px;border:2px solid var(--color-border);border-top-color:var(--color-accent);border-radius:50%;animation:spin 0.8s linear infinite}
+        @keyframes spin{to{transform:rotate(360deg)}}
+        .history-empty{display:flex;flex-direction:column;align-items:center;padding:40px 20px;color:var(--color-text-muted);text-align:center;gap:4px;font-size:14px}
+        .history-empty span{font-size:12px;opacity:0.6}
+        
+        @media(max-width:768px){
+            #country-panel{position:fixed;top:var(--topbar-height,56px);right:0;bottom:var(--statusbar-height,36px);width:100%;max-width:400px;box-shadow:-8px 0 24px rgba(0,0,0,0.15);transform:translateX(100%)}
+            .flag-modal-image{max-width:95vw;max-height:70vh}
+            #country-panel .panel-body{padding:14px 16px}
+            #countryFlag{width:64px;height:42px}
+            #countryName{font-size:18px}
+        }
+    `;
+
+    document.head.appendChild(styles);
+}
 
     // ==========================================
     // API

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Интерактивная карта мира Рантака — исследуйте страны, их историю и культуру">
+    <meta name="description" content="Интерактивная карта мира Рантаки">
     <meta name="theme-color" content="#4a7cf7">
     
     <title>Рантака</title>
@@ -52,7 +52,7 @@
         <!-- ========================================== -->
 
         <header id="topbar" role="banner">
-            <div class="logo" aria-label="Рантака — главная">
+            <div class="logo" aria-label="Рантака">
                 <img src="assets/logo.png" alt="Логотип Рантака" class="logo-icon" aria-hidden="true">
                 <span class="logo-text">Рантака</span>
                 <span class="badge">beta</span>
@@ -80,10 +80,6 @@
                     <span aria-hidden="true">⛶</span>
                     <span class="btn-label">На весь экран</span>
                 </button>
-
-                <button id="themeToggle" title="Переключить тему" aria-label="Переключить светлую/тёмную тему">
-                    <span aria-hidden="true" class="theme-icon">🌙</span>
-                </button>
             </div>
         </header>
 
@@ -106,7 +102,7 @@
 
                 <!-- Подсказка для пользователя -->
                 <div class="map-hint" aria-hidden="true">
-                    <span>🖱 Кликните по стране для информации</span>
+                    <span>Кликните по стране для информации</span>
                 </div>
             </section>
 
@@ -117,9 +113,6 @@
             <aside id="country-panel" role="complementary" aria-label="Информация о стране">
                 <div class="panel-header">
                     <h2>Информация о стране</h2>
-                    <button class="close-btn" id="closePanel" aria-label="Закрыть панель">
-                        <span aria-hidden="true">✕</span>
-                    </button>
                 </div>
 
                 <div class="panel-body">
@@ -134,37 +127,24 @@
 
                     <!-- Информация о стране (скрыта по умолчанию) -->
                     <div id="country-info" style="display:none;" role="article">
-                        <div class="flag-wrapper">
+                        <!-- Шапка: флаг + название + правитель (заполняется через panel.js) -->
+                        <div class="country-header">
                             <img id="countryFlag" src="" alt="Флаг страны" loading="lazy">
+                            <div class="country-header-info">
+                                <h2 id="countryName"></h2>
+                                <span id="countryLeader"></span>
+                            </div>
                         </div>
 
-                        <h2 id="countryName"></h2>
+                        <!-- Основные поля (заполняются через panel.js) -->
+                        <!-- Основные поля (заполняются через panel.js) -->
+                        <div class="info-fields">
+                            <p><strong>🏛️ Столица</strong><span id="countryCapital">—</span></p>
+                            <p><strong>📜 Идеология</strong><span id="countryIdeology">—</span></p>
+                            <p><strong>🛡️ Союз</strong><span id="countryAlliance">—</span></p>
+                        </div>
 
-                        <div class="info-grid">
-                        <div class="info-row">
-                        <span class="label">🏛 Столица</span>
-                        <span class="value" id="countryCapital">—</span>
-                    </div>
-                        <div class="info-row">
-                <span class="label">📜 Идеология</span>
-                <span class="value" id="countryIdeology">—</span>
-            </div>
-            <div class="info-row">
-                <span class="label">👥 Население</span>
-                <span class="value" id="countryPopulation">—</span>
-            </div>
-                <div class="info-row">
-                <span class="label">🤝 Альянс</span>
-                <span class="value" id="countryAlliance">—</span>
-        </div>
-    </div>
-
-    <div class="description-section">
-        <h3>Описание</h3>
-        <p id="countryDescription"></p>
-    </div>
-</div>
-
+                        <!-- Описание -->
                         <div class="description-section">
                             <h3>Описание</h3>
                             <p id="countryDescription"></p>
@@ -186,9 +166,6 @@
             <button id="zoomOut" aria-label="Отдалить карту" title="Отдалить">
                 <span aria-hidden="true">−</span>
             </button>
-            <button id="resetView" aria-label="Сбросить вид" title="Сбросить вид">
-                <span aria-hidden="true">⟲</span>
-            </button>
         </div>
 
         <!-- ========================================== -->
@@ -208,10 +185,6 @@
                 <span class="status-item">
                     Масштаб:
                     <strong id="zoomValue">100%</strong>
-                </span>
-                <span class="status-item">
-                    <span aria-hidden="true">📍</span>
-                    <span id="coordinates">0, 0</span>
                 </span>
             </div>
 
@@ -243,13 +216,6 @@
     
     <!-- Инициализация приложения -->
     <script src="js/app.js"></script>
-
-    <!-- Service Worker для кеширования (опционально) -->
-    <script>
-        if ('serviceWorker' in navigator) {
-            // navigator.serviceWorker.register('/sw.js');
-        }
-    </script>
 
 </body>
 </html>
