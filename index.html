@@ -23,6 +23,11 @@
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
     <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+
+    <!-- Скрываем оверлеи сразу -->
+    <style>
+        #secret-overlay, #info-modal { display: none; }
+    </style>
 </head>
 
 <body>
@@ -80,6 +85,23 @@
             </div>
 
             <div class="top-buttons">
+                <!-- Переключатель карт -->
+                <div class="map-switcher">
+                    <span class="map-switcher-label">Карта:</span>
+                    <button id="mapSwitchBtn" class="map-switch-btn" title="Переключить карту">
+                        <span id="mapSwitchText">479 год</span>
+                        <span class="map-switch-arrow">▾</span>
+                    </button>
+                    <div id="mapSwitchDropdown" class="map-switch-dropdown">
+                        <button class="map-switch-option active" data-map="world.svg" data-label="479 год">
+                            479 год
+                        </button>
+                        <button class="map-switch-option" data-map="world50.svg" data-label="478/1 год">
+                            478/1 год
+                        </button>
+                    </div>
+                </div>
+
                 <button id="infoButton" class="info-btn" title="Информация" aria-label="Информация о проекте">
                     <span aria-hidden="true">ℹ</span>
                 </button>
@@ -119,7 +141,6 @@
                 </div>
 
                 <div class="panel-body">
-                    <!-- Плейсхолдер -->
                     <div id="country-placeholder">
                         <div class="placeholder-icon" aria-hidden="true">
                             <img src="assets/logo.png" alt="" class="placeholder-logo">
@@ -128,7 +149,6 @@
                         <p>Нажмите на любую страну на карте, чтобы увидеть подробную информацию</p>
                     </div>
 
-                    <!-- Информация о стране (скрыта по умолчанию) -->
                     <div id="country-info" style="display:none;" role="article">
                         <div class="country-header">
                             <img id="countryFlag" src="" alt="Флаг страны" loading="lazy">
@@ -241,9 +261,93 @@
     <script src="js/theme.js"></script>
     <script src="js/app.js"></script>
 
-    <!-- Логика модальных окон -->
+    <!-- Логика модальных окон и переключателя карт -->
     <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // ==========================================
+        // Переключатель карт
+        // ==========================================
+        const mapSwitchBtn = document.getElementById('mapSwitchBtn');
+        const mapSwitchDropdown = document.getElementById('mapSwitchDropdown');
+        const mapSwitchText = document.getElementById('mapSwitchText');
+        let currentMap = 'world.svg';
+
+        // Открыть/закрыть дропдаун
+        mapSwitchBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            mapSwitchDropdown.classList.toggle('open');
+        });
+
+        // Выбор карты
+        mapSwitchDropdown.querySelectorAll('.map-switch-option').forEach(option => {
+            option.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const mapFile = this.dataset.map;
+                const mapLabel = this.dataset.label;
+
+                if (mapFile === currentMap) {
+                    mapSwitchDropdown.classList.remove('open');
+                    return;
+                }
+
+                // Обновляем активную опцию
+                mapSwitchDropdown.querySelectorAll('.map-switch-option').forEach(opt => {
+                    opt.classList.remove('active');
+                });
+                this.classList.add('active');
+
+                // Обновляем текст кнопки
+                mapSwitchText.textContent = mapLabel;
+                currentMap = mapFile;
+
+                // Закрываем дропдаун
+                mapSwitchDropdown.classList.remove('open');
+
+                // Показываем загрузку
+                const loadingScreen = document.getElementById('loading-screen');
+                if (loadingScreen) {
+                    loadingScreen.querySelector('p').textContent = 'Загрузка карты ' + mapLabel + '...';
+                    loadingScreen.classList.remove('hidden');
+                    loadingScreen.style.display = 'flex';
+                }
+
+                // Загружаем новую карту
+                if (window.MapManager && window.MapManager.loadMap) {
+                    // Сбрасываем зум
+                    if (window.ZoomManager && window.ZoomManager.resetView) {
+                        ZoomManager.resetView();
+                    }
+
+                    // Закрываем панель
+                    if (window.PanelManager && window.PanelManager.hideCountry) {
+                        PanelManager.hideCountry();
+                    }
+
+                    MapManager.loadMap('svg/' + mapFile).then(() => {
+                        // Скрываем загрузку
+                        if (loadingScreen) {
+                            loadingScreen.classList.add('hidden');
+                            setTimeout(() => {
+                                loadingScreen.style.display = 'none';
+                            }, 500);
+                        }
+                    }).catch(() => {
+                        if (loadingScreen) {
+                            loadingScreen.classList.add('hidden');
+                            setTimeout(() => {
+                                loadingScreen.style.display = 'none';
+                            }, 500);
+                        }
+                    });
+                }
+            });
+        });
+
+        // Закрытие дропдауна по клику вне
+        document.addEventListener('click', function() {
+            mapSwitchDropdown.classList.remove('open');
+        });
+
         // ==========================================
         // Модалка "Информация"
         // ==========================================
@@ -318,11 +422,13 @@
                     closeSecretOverlay();
                 } else if (infoModal.classList.contains('active')) {
                     closeInfoModal();
+                } else if (mapSwitchDropdown.classList.contains('open')) {
+                    mapSwitchDropdown.classList.remove('open');
                 }
             }
         });
     });
-</script>
+    </script>
 
     <!-- Стили -->
     <style>
@@ -348,6 +454,96 @@
             border-color: var(--color-accent);
         }
 
+        /* Переключатель карт */
+        .map-switcher {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .map-switcher-label {
+            font-size: 12px;
+            color: var(--color-text-muted);
+            white-space: nowrap;
+        }
+
+        .map-switch-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            height: 34px;
+            padding: 0 12px;
+            background: transparent;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            color: var(--color-text-primary);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .map-switch-btn:hover {
+            background: var(--color-accent-light);
+            color: var(--color-accent);
+            border-color: var(--color-accent);
+        }
+
+        .map-switch-arrow {
+            font-size: 10px;
+            opacity: 0.5;
+            transition: transform 0.2s;
+        }
+
+        .map-switch-dropdown {
+            position: absolute;
+            top: calc(100% + 6px);
+            right: 0;
+            min-width: 160px;
+            background: var(--color-bg-secondary);
+            border: 1px solid var(--color-border);
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            z-index: 500;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-6px);
+            transition: all 0.2s ease;
+            overflow: hidden;
+        }
+
+        .map-switch-dropdown.open {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .map-switch-option {
+            display: block;
+            width: 100%;
+            padding: 10px 16px;
+            background: transparent;
+            border: none;
+            text-align: left;
+            font-size: 13px;
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .map-switch-option:hover {
+            background: var(--color-accent-light);
+            color: var(--color-accent);
+        }
+
+        .map-switch-option.active {
+            background: var(--color-accent-light);
+            color: var(--color-accent);
+            font-weight: 600;
+        }
+
         /* Модальное окно информации */
         .info-modal-overlay {
             position: fixed;
@@ -357,7 +553,7 @@
             height: 100%;
             background: rgba(0, 0, 0, 0.5);
             z-index: 10000;
-            display: flex;
+            display: none;
             align-items: center;
             justify-content: center;
             opacity: 0;
@@ -368,6 +564,7 @@
         }
         
         .info-modal-overlay.active {
+            display: flex;
             opacity: 1;
             visibility: visible;
         }
@@ -506,7 +703,7 @@
             height: 100%;
             background: rgba(0, 0, 0, 0.85);
             z-index: 11000;
-            display: flex;
+            display: none;
             align-items: center;
             justify-content: center;
             opacity: 0;
@@ -517,6 +714,7 @@
         }
         
         .secret-overlay.active {
+            display: flex;
             opacity: 1;
             visibility: visible;
         }
@@ -560,6 +758,12 @@
             transform: scale(1);
         }
         
+        @media (max-width: 768px) {
+            .map-switcher-label {
+                display: none;
+            }
+        }
+
         @media (max-width: 480px) {
             .info-modal-content {
                 width: 95%;
@@ -569,6 +773,12 @@
             .secret-image {
                 max-width: 95vw;
                 max-height: 80vh;
+            }
+
+            .map-switch-btn {
+                font-size: 12px;
+                padding: 0 8px;
+                height: 30px;
             }
         }
     </style>
