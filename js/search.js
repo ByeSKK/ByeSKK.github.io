@@ -51,6 +51,7 @@ const SearchManager = (() => {
         showCountryFlag: true,
         showCountryCapital: true,
         showCountryAlliance: true,
+        excludeTerritoryParts: true,
         searchFields: ['name', 'capital', 'leader', 'alliance'],
         sortBy: 'relevance', // relevance, name, population
         enableHistory: true,
@@ -343,92 +344,94 @@ const SearchManager = (() => {
      * @param {string} query - поисковый запрос
      */
     function _performSearch(query) {
-        if (!window.DataManager) {
-            console.error('[SearchManager] DataManager не доступен');
-            return;
+    _state.isSearching = true;
+
+    // Получаем все страны (кэшируем при первом обращении)
+    if (_cache.allCountries.length === 0 && window.DataManager) {
+        _cache.allCountries = DataManager.getAllCountries();
+
+        // Фильтруем части территорий, если нужно
+        if (_settings.excludeTerritoryParts) {
+            _cache.allCountries = _cache.allCountries.filter(
+                country => country.isMainPart !== false
+            );
         }
+    }
 
-        _state.isSearching = true;
+    const allCountries = _cache.allCountries;
+    const results = [];
 
-        // Получаем все страны (кэшируем)
-        if (_cache.allCountries.length === 0) {
-            _cache.allCountries = DataManager.getAllCountries();
-        }
+    const searchQuery = query.toLowerCase();
 
-        const allCountries = _cache.allCountries;
-        const results = [];
+    // Поиск по всем указанным полям
+    allCountries.forEach(country => {
+        let relevance = 0;
+        const matchDetails = [];
 
-        const searchQuery = query.toLowerCase();
+        _settings.searchFields.forEach(field => {
+            const value = country[field];
+            if (!value) return;
 
-        // Поиск по всем указанным полям
-        allCountries.forEach(country => {
-            let relevance = 0;
-            const matchDetails = [];
-
-            _settings.searchFields.forEach(field => {
-                const value = country[field];
-                if (!value) return;
-
-                const fieldValue = value.toString().toLowerCase();
-                
-                // Точное совпадение
-                if (fieldValue === searchQuery) {
-                    relevance += 100;
-                    matchDetails.push({ field, type: 'exact' });
-                }
-                // Начинается с запроса
-                else if (fieldValue.startsWith(searchQuery)) {
-                    relevance += 50;
-                    matchDetails.push({ field, type: 'starts' });
-                }
-                // Содержит запрос
-                else if (fieldValue.includes(searchQuery)) {
-                    relevance += 25;
-                    matchDetails.push({ field, type: 'contains' });
-                }
-                // Содержит все слова из запроса
-                else if (_containsAllWords(fieldValue, searchQuery)) {
-                    relevance += 15;
-                    matchDetails.push({ field, type: 'words' });
-                }
-            });
-
-            if (relevance > 0) {
-                results.push({
-                    country,
-                    relevance,
-                    matchDetails
-                });
+            const fieldValue = value.toString().toLowerCase();
+            
+            // Точное совпадение
+            if (fieldValue === searchQuery) {
+                relevance += 100;
+                matchDetails.push({ field, type: 'exact' });
+            }
+            // Начинается с запроса
+            else if (fieldValue.startsWith(searchQuery)) {
+                relevance += 50;
+                matchDetails.push({ field, type: 'starts' });
+            }
+            // Содержит запрос
+            else if (fieldValue.includes(searchQuery)) {
+                relevance += 25;
+                matchDetails.push({ field, type: 'contains' });
+            }
+            // Содержит все слова из запроса
+            else if (_containsAllWords(fieldValue, searchQuery)) {
+                relevance += 15;
+                matchDetails.push({ field, type: 'words' });
             }
         });
 
-        // Сортировка
-        _sortResults(results);
-
-        // Сохраняем результаты
-        _state.results = results.slice(0, _settings.maxResults);
-        _state.totalResults = results.length;
-        _state.selectedIndex = -1;
-        _state.isSearching = false;
-
-        // Кэшируем последние результаты
-        _cache.lastResults = results;
-
-        // Обновляем UI
-        _renderSuggestions();
-        _updateResultsCount();
-
-        // Открываем предложения
-        if (_state.results.length > 0) {
-            _openSuggestions();
-        } else {
-            _showNoResults();
+        if (relevance > 0) {
+            results.push({
+                country,
+                relevance,
+                matchDetails
+            });
         }
+    });
 
-        // Вызываем колбэк
-        if (_callbacks.onSearch) {
-            _callbacks.onSearch(query);
-        }
+    // Сортировка
+    _sortResults(results);
+
+    // Сохраняем результаты
+    _state.results = results.slice(0, _settings.maxResults);
+    _state.totalResults = results.length;
+    _state.selectedIndex = -1;
+    _state.isSearching = false;
+
+    // Кэшируем последние результаты
+    _cache.lastResults = results;
+
+    // Обновляем UI
+    _renderSuggestions();
+    _updateResultsCount();
+
+    // Открываем предложения
+    if (_state.results.length > 0) {
+        _openSuggestions();
+    } else {
+        _showNoResults();
+    }
+
+    // Вызываем колбэк
+    if (_callbacks.onSearch) {
+        _callbacks.onSearch(query);
+    }
     }
 
     /**

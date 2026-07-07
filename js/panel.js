@@ -215,26 +215,61 @@ const PanelManager = (() => {
     // ==========================================
 
     function showCountry(country) {
-        if (!country) return;
+    if (!country) return;
 
-        _state.currentCountry = country;
-        _state.currentCountryId = country.id;
-        _state.showingHistory = false;
-        _state.activeTag = null;
-        _state.searchQuery = '';
-
-        _fillData(country);
-
-        if (_elements.placeholder) _elements.placeholder.style.display = 'none';
-        if (_elements.infoContainer) {
-            _elements.infoContainer.style.display = 'block';
-            _elements.infoContainer.style.opacity = '0';
-            _showMainInfo();
-            requestAnimationFrame(() => {
-                _elements.infoContainer.style.transition = 'opacity 200ms ease';
-                _elements.infoContainer.style.opacity = '1';
-            });
+    // Если это часть территории — получаем основную страну
+    let mainCountry = country;
+    
+    // Проверяем через DataManager
+    if (window.DataManager && typeof DataManager.getTerritoryByCountryId === 'function') {
+        const territoryData = DataManager.getTerritoryByCountryId(country.id);
+        if (territoryData) {
+            // Ищем основную страну по ID территории
+            const allCountries = DataManager.getAllCountries();
+            const main = allCountries.find(c => 
+                c.id === Object.keys(DataManager.getTerritories?.() || {}).find(key => {
+                    const t = DataManager.getTerritories()[key];
+                    return t.territories && t.territories.includes(country.id) && key === country.id;
+                }) || c.groupId === territoryData.name
+            );
+            
+            // Более простой способ: ищем страну с isMainPart: true в той же группе
+            const mainByGroup = allCountries.find(c => 
+                c.groupId && c.groupId === (country.groupId || country.id) && c.isMainPart === true
+            );
+            
+            if (mainByGroup) {
+                mainCountry = mainByGroup;
+            } else if (country.isMainPart === false && country.groupId) {
+                // Ищем основную по groupId
+                const mainByGroupId = allCountries.find(c => 
+                    c.id === country.groupId && c.isMainPart !== false
+                );
+                if (mainByGroupId) {
+                    mainCountry = mainByGroupId;
+                }
+            }
         }
+    }
+
+    _state.currentCountry = mainCountry;
+    _state.currentCountryId = country.id;
+    _state.showingHistory = false;
+    _state.activeTag = null;
+    _state.searchQuery = '';
+
+    _fillData(mainCountry);
+
+    if (_elements.placeholder) _elements.placeholder.style.display = 'none';
+    if (_elements.infoContainer) {
+        _elements.infoContainer.style.display = 'block';
+        _elements.infoContainer.style.opacity = '0';
+        _showMainInfo();
+        requestAnimationFrame(() => {
+            _elements.infoContainer.style.transition = 'opacity 200ms ease';
+            _elements.infoContainer.style.opacity = '1';
+        });
+    }
 
         openPanel();
     }

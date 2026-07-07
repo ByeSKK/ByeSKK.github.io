@@ -1,47 +1,33 @@
-/* ============================================================
-   data.js — DataManager: Загрузка и управление данными мира
-   Версия 2.1 — Добавлена поддержка группировки стран (анклавы)
-   ============================================================ */
+/**
+ * data.js — DataManager: Загрузка и управление данными мира
+ * Версия 2.1 — Добавлена поддержка группировки стран (анклавы)
+ */
 
 const DataManager = (() => {
     'use strict';
 
-    // ==========================================
-    // ПРИВАТНЫЕ ПЕРЕМЕННЫЕ
-    // ==========================================
-
-    /** Базовый путь к директории с данными */
     const DATA_PATH = 'data/';
 
-    /** Загруженные данные (кэш) */
     let _countries = null;
     let _alliances = null;
     let _history = null;
     let _relations = null;
+    let _territories = {};
 
-    /** Индексы для быстрого поиска */
     let _countriesById = {};
     let _countriesByAlliance = {};
     let _alliancesById = {};
     let _relationsByCountry = {};
-    
-    /** Индексы для группировки стран */
+
     let _countryGroups = {};
     let _countryToGroup = {};
 
-    /** Флаги состояния */
     let _isLoaded = false;
     let _isLoading = false;
 
-    /** Массив колбэков для события загрузки */
     let _onLoadCallbacks = [];
 
-    /** Кэш для хранения Promise'ов загрузки */
     let _loadPromise = null;
-
-    // ==========================================
-    // ПРИВАТНЫЕ МЕТОДЫ
-    // ==========================================
 
     /**
      * Загружает JSON файл по URL
@@ -69,7 +55,6 @@ const DataManager = (() => {
      * Строит индексы для быстрого доступа к данным
      */
     function _buildIndexes() {
-        // Очищаем индексы
         _countriesById = {};
         _countriesByAlliance = {};
         _alliancesById = {};
@@ -77,7 +62,6 @@ const DataManager = (() => {
         _countryGroups = {};
         _countryToGroup = {};
 
-        // Индекс стран по ID
         if (_countries) {
             _countries.forEach(country => {
                 if (country.id) {
@@ -85,7 +69,6 @@ const DataManager = (() => {
                     _countriesById[country.id.toLowerCase()] = country;
                 }
 
-                // Группировка по альянсам
                 if (country.alliance && country.alliance !== 'Нет' && country.alliance !== 'Отсутствует') {
                     const allianceKey = country.alliance.toLowerCase();
                     if (!_countriesByAlliance[allianceKey]) {
@@ -94,7 +77,6 @@ const DataManager = (() => {
                     _countriesByAlliance[allianceKey].push(country);
                 }
 
-                // Группировка стран (анклавы, части государств)
                 if (country.groupId) {
                     if (!_countryGroups[country.groupId]) {
                         _countryGroups[country.groupId] = [];
@@ -105,7 +87,6 @@ const DataManager = (() => {
             });
         }
 
-        // Индекс альянсов по ID
         if (_alliances) {
             _alliances.forEach(alliance => {
                 if (alliance.id) {
@@ -115,7 +96,6 @@ const DataManager = (() => {
             });
         }
 
-        // Индекс отношений по стране
         if (_relations) {
             _relations.forEach(rel => {
                 if (rel.countryId) {
@@ -203,7 +183,7 @@ const DataManager = (() => {
         const startTime = performance.now();
 
         try {
-            const [countries, alliances, history, relations] = await Promise.all([
+            const [countries, alliances, history, relations, territories] = await Promise.all([
                 _fetchJSON(`${DATA_PATH}countries.json`).catch(err => {
                     console.warn('[DataManager] Не удалось загрузить страны:', err.message);
                     return [];
@@ -219,6 +199,10 @@ const DataManager = (() => {
                 _fetchJSON(`${DATA_PATH}relations.json`).catch(err => {
                     console.warn('[DataManager] Не удалось загрузить отношения:', err.message);
                     return [];
+                }),
+                _fetchJSON(`${DATA_PATH}territories.json`).catch(err => {
+                    console.warn('[DataManager] Не удалось загрузить территории:', err.message);
+                    return {};
                 })
             ]);
 
@@ -232,7 +216,9 @@ const DataManager = (() => {
             _alliances = Array.isArray(alliances) ? alliances : [];
             _history = Array.isArray(history) ? history : [];
             _relations = Array.isArray(relations) ? relations : [];
+            _territories = territories || {};
 
+            _applyTerritories();
             _buildIndexes();
 
             const loadTime = (performance.now() - startTime).toFixed(1);
@@ -241,31 +227,28 @@ const DataManager = (() => {
             console.log(`  Альянсов: ${_alliances.length}`);
             console.log(`  Исторических событий: ${_history.length}`);
             console.log(`  Наборов отношений: ${_relations.length}`);
-            console.log(`  Групп стран: ${Object.keys(_countryGroups).length}`);
+            console.log(`  Групп территорий: ${Object.keys(_territories).length}`);
 
-            return { 
-                countries: _countries, 
-                alliances: _alliances, 
+            return {
+                countries: _countries,
+                alliances: _alliances,
                 history: _history,
-                relations: _relations
+                relations: _relations,
+                territories: _territories
             };
 
         } catch (error) {
             console.error('[DataManager] Критическая ошибка загрузки:', error);
-            
+
             _countries = [];
             _alliances = [];
             _history = [];
             _relations = [];
             _buildIndexes();
-            
+
             throw error;
         }
     }
-
-    // ==========================================
-    // МЕТОДЫ ДЛЯ ГРУППИРОВКИ СТРАН
-    // ==========================================
 
     /**
      * Получает все части страны по groupId
@@ -286,13 +269,11 @@ const DataManager = (() => {
         const parts = getCountryPartsByGroup(groupId);
         if (parts.length === 0) return null;
 
-        // Ищем isMainPart = true
         for (const id of parts) {
             const country = getCountryById(id);
             if (country && country.isMainPart) return country;
         }
 
-        // Если нет явной основной части, возвращаем первую
         return getCountryById(parts[0]);
     }
 
@@ -323,12 +304,10 @@ const DataManager = (() => {
         const country = getCountryById(countryId);
         if (!country) return [countryId];
 
-        // Если страна в группе
         if (country.groupId) {
             return getCountryPartsByGroup(country.groupId);
         }
 
-        // Проверяем, не является ли ID частью группы
         const groupId = _countryToGroup[countryId];
         if (groupId) {
             return getCountryPartsByGroup(groupId);
@@ -361,10 +340,6 @@ const DataManager = (() => {
         return { ..._countryGroups };
     }
 
-    // ==========================================
-    // ПУБЛИЧНЫЕ МЕТОДЫ (API)
-    // ==========================================
-
     /**
      * Загружает все данные мира
      * @returns {Promise<object>} Promise с объектом данных
@@ -372,9 +347,9 @@ const DataManager = (() => {
     async function loadData() {
         if (_isLoaded && _countries) {
             console.log('[DataManager] Данные уже загружены, возвращаю из кэша');
-            return { 
-                countries: _countries, 
-                alliances: _alliances, 
+            return {
+                countries: _countries,
+                alliances: _alliances,
                 history: _history,
                 relations: _relations
             };
@@ -421,9 +396,9 @@ const DataManager = (() => {
         }
 
         if (_isLoaded && _countries) {
-            callback({ 
-                countries: _countries, 
-                alliances: _alliances, 
+            callback({
+                countries: _countries,
+                alliances: _alliances,
                 history: _history,
                 relations: _relations
             });
@@ -447,10 +422,10 @@ const DataManager = (() => {
      */
     function getCountryById(id) {
         if (!id) return null;
-        
+
         if (_countriesById[id]) return _countriesById[id];
         if (_countriesById[id.toLowerCase()]) return _countriesById[id.toLowerCase()];
-        
+
         return null;
     }
 
@@ -473,7 +448,7 @@ const DataManager = (() => {
         const results = _countries.filter(country => {
             const name = caseSensitive ? country.name : country.name.toLowerCase();
             const capital = caseSensitive ? country.capital : country.capital.toLowerCase();
-            
+
             return name.includes(searchQuery) || capital.includes(searchQuery);
         });
 
@@ -544,7 +519,6 @@ const DataManager = (() => {
     function getCountryHistory(countryId) {
         if (!_history || !Array.isArray(_history)) return [];
 
-        // Получаем все связанные ID (включая анклавы)
         const connectedIds = getConnectedCountryIds(countryId);
         const lowerConnectedIds = connectedIds.map(id => id.toLowerCase());
 
@@ -553,6 +527,83 @@ const DataManager = (() => {
             const eventCountryId = event.countryId.toLowerCase();
             return lowerConnectedIds.includes(eventCountryId);
         });
+    }
+
+    /**
+     * Применяет данные территорий к странам
+     * Автоматически создаёт записи для частей стран
+     */
+    function _applyTerritories() {
+        if (!_territories || Object.keys(_territories).length === 0) return;
+
+        Object.entries(_territories).forEach(([mainId, territoryData]) => {
+            const mainCountry = _countries.find(c =>
+                c.id === mainId ||
+                c.id.toLowerCase() === mainId.toLowerCase()
+            );
+
+            if (!mainCountry) {
+                const newCountry = {
+                    id: mainId,
+                    name: territoryData.name || mainId,
+                    capital: territoryData.capital || 'Нет данных',
+                    leader: territoryData.leader || 'Нет данных',
+                    ideology: 'Нет данных',
+                    population: 0,
+                    army: 0,
+                    economy: 'Нет данных',
+                    alliance: 'Нет',
+                    description: territoryData.description || '',
+                    flag: territoryData.flag || 'flags/default.png',
+                    color: territoryData.color || null,
+                    groupId: mainId,
+                    isMainPart: true,
+                    isNPC: territoryData.isNPC || false,
+                    territories: territoryData.territories || []
+                };
+                _countries.push(newCountry);
+            } else {
+                mainCountry.groupId = mainId;
+                mainCountry.isMainPart = true;
+                mainCountry.territories = territoryData.territories || [];
+                if (!mainCountry.name || mainCountry.name === mainId) {
+                    mainCountry.name = territoryData.name;
+                }
+            }
+
+            const territoryIds = territoryData.territories || [];
+            territoryIds.forEach(territoryId => {
+                if (territoryId === mainId) return;
+
+                const exists = _countries.find(c =>
+                    c.id === territoryId ||
+                    c.id.toLowerCase() === territoryId.toLowerCase()
+                );
+
+                if (!exists) {
+                    const partCountry = {
+                        id: territoryId,
+                        name: territoryData.name || mainId,
+                        capital: territoryData.capital || 'Нет данных',
+                        leader: territoryData.leader || 'Нет данных',
+                        ideology: 'Нет данных',
+                        population: 0,
+                        army: 0,
+                        economy: 'Нет данных',
+                        alliance: 'Нет',
+                        description: `Часть ${territoryData.name || mainId}.`,
+                        flag: territoryData.flag || 'flags/default.png',
+                        color: territoryData.color || null,
+                        groupId: mainId,
+                        isMainPart: false,
+                        isNPC: territoryData.isNPC || false
+                    };
+                    _countries.push(partCountry);
+                }
+            });
+        });
+
+        console.log(`[DataManager] Территории применены. Всего стран: ${_countries.length}`);
     }
 
     /**
@@ -630,11 +681,11 @@ const DataManager = (() => {
             uniqueAlliances: uniqueAlliances.length,
             ideologyList: uniqueIdeologies,
             allianceList: uniqueAlliances,
-            averagePopulation: _countries.length > 0 
-                ? Math.round(totalPopulation / _countries.length) 
+            averagePopulation: _countries.length > 0
+                ? Math.round(totalPopulation / _countries.length)
                 : 0,
-            averageArmy: _countries.length > 0 
-                ? Math.round(totalArmy / _countries.length) 
+            averageArmy: _countries.length > 0
+                ? Math.round(totalArmy / _countries.length)
                 : 0,
             relationsLoaded: _relations ? _relations.length : 0,
             countryGroups: Object.keys(_countryGroups).length
@@ -659,7 +710,7 @@ const DataManager = (() => {
         _isLoading = false;
         _loadPromise = null;
         _onLoadCallbacks = [];
-        
+
         console.log('[DataManager] Данные сброшены');
     }
 
@@ -730,37 +781,54 @@ const DataManager = (() => {
         return true;
     }
 
-    // ==========================================
-    // ПУБЛИЧНЫЙ API
-    // ==========================================
+    /**
+     * Получить все загруженные территории
+     * @returns {object} объект территорий
+     */
+    function getTerritories() {
+        return _territories ? { ..._territories } : {};
+    }
+
+    /**
+     * Получить данные территории по ID страны (основной или части)
+     * @param {string} countryId - ID страны
+     * @returns {object|null}
+     */
+    function getTerritoryByCountryId(countryId) {
+        if (!_territories) return null;
+
+        if (_territories[countryId]) return _territories[countryId];
+
+        for (const [key, data] of Object.entries(_territories)) {
+            if (data.territories && data.territories.includes(countryId)) {
+                return data;
+            }
+        }
+
+        return null;
+    }
 
     return {
-        // Загрузка
         loadData,
         onDataLoaded,
         isDataLoaded,
         getLoadState,
 
-        // Страны
         getAllCountries,
         getCountryById,
         searchCountries,
         getCountriesByAlliance,
 
-        // Альянсы
         getAllAlliances,
         getAllianceById,
         getAllianceByCountry,
 
-        // История
         getWorldHistory,
         getCountryHistory,
 
-        // Отношения
         getRelationsForCountry,
         getAllRelations,
 
-        // Группировка стран (анклавы)
         getCountryPartsByGroup,
         getMainCountryPart,
         isCountryInGroup,
@@ -769,23 +837,18 @@ const DataManager = (() => {
         getGroupDisplayName,
         getAllCountryGroups,
 
-        // Связи
         getNeighbors,
 
-        // Статистика
         getWorldStats,
 
-        // Управление
         resetData,
         exportAllData,
-        importData
+        importData,
+
+        getTerritories,
+        getTerritoryByCountryId
     };
 
 })();
-
-
-/* ============================================================
-   ЭКСПОРТ В ГЛОБАЛЬНУЮ ОБЛАСТЬ
-   ============================================================ */
 
 window.DataManager = DataManager;

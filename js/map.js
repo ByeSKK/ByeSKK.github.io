@@ -1086,58 +1086,107 @@ const MapManager = (() => {
      */
     function selectCountry(countryId) {
         console.log(`[MapManager] Выбор страны: ${countryId}`);
-        
+    
         const normalizedId = _normalizeCountryId(countryId);
         const country = _countries[normalizedId];
-        
+    
         if (!country) {
-            console.error(`[MapManager] ❌ Страна "${normalizedId}" не найдена!`);
-            
-            const partialMatch = _findCountryByPartialId(normalizedId);
-            if (partialMatch) {
-                console.log(`[MapManager] Найдено частичное совпадение: ${partialMatch.id} -> ${partialMatch.name}`);
-                return selectCountry(partialMatch.id);
-            }
-            
-            const nameMatch = _findCountryByName(normalizedId);
-            if (nameMatch) {
-                console.log(`[MapManager] Найдено совпадение по имени: ${nameMatch.id} -> ${nameMatch.name}`);
-                return selectCountry(nameMatch.id);
-            }
-            
-            console.log('[MapManager] Доступные ID (первые 20):', Object.keys(_countries).slice(0, 20));
-            return false;
-        }
-
-        if (_state.selectedCountryId && _state.selectedCountryId !== normalizedId) {
-            _clearSingleCountryHighlight(_state.selectedCountryId);
-        }
-
-        country.element.classList.add(_settings.selectedClass);
-        country.element.classList.remove(_settings.hoveredClass, _settings.highlightedClass);
+        console.error(`[MapManager] ❌ Страна "${normalizedId}" не найдена!`);
         
-        _state.selectedCountryId = normalizedId;
-
-        console.log(`[MapManager] ✅ Выбрана страна: ${country.name} (${normalizedId})`);
+        const partialMatch = _findCountryByPartialId(normalizedId);
+        if (partialMatch) {
+            console.log(`[MapManager] Найдено частичное совпадение: ${partialMatch.id} -> ${partialMatch.name}`);
+            return selectCountry(partialMatch.id);
+        }
         
-        return true;
+        const nameMatch = _findCountryByName(normalizedId);
+        if (nameMatch) {
+            console.log(`[MapManager] Найдено совпадение по имени: ${nameMatch.id} -> ${nameMatch.name}`);
+            return selectCountry(nameMatch.id);
+        }
+        
+        console.log('[MapManager] Доступные ID (первые 20):', Object.keys(_countries).slice(0, 20));
+        return false;
     }
+
+    // Снимаем предыдущее выделение со всех связанных частей
+    if (_state.selectedConnectedIds && _state.selectedConnectedIds.length > 0) {
+        _state.selectedConnectedIds.forEach(id => {
+            _clearSingleCountryHighlight(id);
+        });
+    }
+
+    // Получаем все связанные ID (территории)
+    const connectedIds = _getConnectedCountryIds(normalizedId);
+    
+    // Выделяем все связанные части
+    connectedIds.forEach(id => {
+        const connectedCountry = _countries[id];
+        if (connectedCountry) {
+            connectedCountry.element.classList.add(_settings.selectedClass);
+            connectedCountry.element.classList.remove(_settings.hoveredClass, _settings.highlightedClass);
+        }
+    });
+
+    _state.selectedCountryId = normalizedId;
+    _state.selectedConnectedIds = connectedIds;
+
+    console.log(`[MapManager] ✅ Выбрана группа: ${country.name} (${connectedIds.length} частей)`);
+    console.log(`[MapManager] Части: ${connectedIds.join(', ')}`);
+    
+    return true;
+}
 
     /**
      * Снимает выделение со всех стран
      */
     function clearSelection() {
-        if (!_state.selectedCountryId) return;
-        
-        console.log('[MapManager] Очистка выделения');
-        
-        const country = _countries[_state.selectedCountryId];
+    if (!_state.selectedCountryId) return;
+    
+    console.log('[MapManager] Очистка выделения');
+    
+    // Очищаем все связанные части
+    const connectedIds = _state.selectedConnectedIds || [_state.selectedCountryId];
+    
+    connectedIds.forEach(id => {
+        const country = _countries[id];
         if (country) {
             country.element.classList.remove(_settings.selectedClass);
         }
-        
+    });
+    
         _state.selectedCountryId = null;
+        _state.selectedConnectedIds = [];
+    }   
+
+    /**
+ * Получает все связанные ID страны (группировка территорий)
+ * @param {string} countryId - ID страны
+ * @returns {string[]} массив связанных ID
+ * @private
+ */
+    function _getConnectedCountryIds(countryId) {
+    // Проверяем DataManager
+        if (window.DataManager) {
+        // Используем getConnectedCountryIds из DataManager
+            if (typeof DataManager.getConnectedCountryIds === 'function') {
+            const connectedIds = DataManager.getConnectedCountryIds(countryId);
+            if (connectedIds && connectedIds.length > 0) {
+                return connectedIds.filter(id => _countries[id]);
+            }
+        }
+        
+        // Используем getTerritoryByCountryId
+        if (typeof DataManager.getTerritoryByCountryId === 'function') {
+            const territoryData = DataManager.getTerritoryByCountryId(countryId);
+            if (territoryData && territoryData.territories) {
+                return territoryData.territories.filter(id => _countries[id]);
+            }
+        }
     }
+
+    return [countryId];
+}
 
     /**
      * Очищает выделение с конкретной страны
