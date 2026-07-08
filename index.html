@@ -89,15 +89,18 @@
                 <div class="map-switcher">
                     <span class="map-switcher-label">Карта:</span>
                     <button id="mapSwitchBtn" class="map-switch-btn" title="Переключить карту">
-                        <span id="mapSwitchText">478 год</span>
+                        <span id="mapSwitchText">418 год 2ч</span>
                         <span class="map-switch-arrow">▾</span>
                     </button>
                     <div id="mapSwitchDropdown" class="map-switch-dropdown">
-                        <button class="map-switch-option active" data-map="world.svg" data-label="478 год">
-                            478 год
+                        <button class="map-switch-option active" data-map="world50.svg" data-label="418 год 2ч">
+                            418 год (часть 2)
                         </button>
-                        <button class="map-switch-option" data-map="world50.svg" data-label="477/1 год">
-                            477/1 год
+                        <button class="map-switch-option" data-map="world51.svg" data-label="419 год 1ч">
+                            419 год (часть 1)
+                        </button>
+                        <button class="map-switch-option" data-map="world52.svg" data-label="419 год 2ч">
+                            419 год (часть 2)
                         </button>
                     </div>
                 </div>
@@ -270,7 +273,7 @@
         const mapSwitchBtn = document.getElementById('mapSwitchBtn');
         const mapSwitchDropdown = document.getElementById('mapSwitchDropdown');
         const mapSwitchText = document.getElementById('mapSwitchText');
-        let currentMap = 'world.svg';
+        let currentMap = 'world50.svg';
 
         // Открыть/закрыть дропдаун
         mapSwitchBtn.addEventListener('click', function(e) {
@@ -501,7 +504,7 @@
             position: absolute;
             top: calc(100% + 6px);
             right: 0;
-            min-width: 160px;
+            min-width: 180px;
             background: var(--color-bg-secondary);
             border: 1px solid var(--color-border);
             border-radius: 10px;
