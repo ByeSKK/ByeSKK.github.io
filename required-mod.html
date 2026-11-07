@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07101f">
+  <meta name="description" content="Единственный обязательный клиентский мод Minecraft-сервера ExoLand и инструкция по установке.">
+  <title>Обязательный мод — ExoLand WIKI</title>
+  <link rel="icon" type="image/png" href="Source/EL.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="required-mod">
+  <a class="skip-link" href="#main-content">Перейти к содержанию</a>
+  <div id="sidebar-mount"></div>
+  <div class="sidebar-backdrop" data-sidebar-close></div>
+
+  <div class="page-shell">
+    <div id="topbar-mount"></div>
+
+    <main class="content" id="main-content" tabindex="-1">
+      <header class="article-heading" data-reveal>
+        <span class="article-heading__index" aria-hidden="true">02</span>
+        <p class="eyebrow">Клиент ExoLand</p>
+        <h1>Один обязательный мод</h1>
+        <p class="lead">Для входа нужен только один клиентский мод. Всё остальное из рекомендаций можно устанавливать или не устанавливать.</p>
+      </header>
+
+      <section class="card required-mod-card" aria-labelledby="mod-name" data-reveal>
+        <div class="required-mod-card__visual" aria-hidden="true"><strong>1</strong><span>обязательный</span></div>
+        <div>
+          <p class="eyebrow">Требуется для игры</p>
+          <h2 id="mod-name" data-config="requiredMod.name">Будет объявлен</h2>
+          <p data-config="requiredMod.description">Единственный обязательный клиентский мод ExoLand</p>
+
+          <div class="info-rows">
+            <div class="info-row"><span>Версия игры</span><strong data-config="server.version">Будет объявлена</strong></div>
+            <div class="info-row"><span>Загрузчик</span><strong data-config="requiredMod.loader">Будет объявлен</strong></div>
+            <div class="info-row"><span>Статус</span><strong>Обязателен для подключения</strong></div>
+          </div>
+
+          <div class="button-row">
+            <a class="button" data-config-link="requiredMod.downloadUrl" data-fallback="Ссылка появится позже">
+              <span data-link-label>Скачать мод</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 5h5v5M19 5l-8 8"></path><path d="M18 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"></path></svg>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <div class="callout callout--warning" style="margin-top: 16px" data-reveal>
+        <span class="callout__icon">!</span>
+        <div><strong>Название и ссылка будут опубликованы администрацией</strong><p>Скачивайте обязательный мод только по ссылке из этой WIKI или официального сообщества ExoLand.</p></div>
+      </div>
+
+      <section class="section-block grid-2" aria-labelledby="install-title" data-reveal>
+        <article class="card card--padded">
+          <p class="eyebrow">Установка</p>
+          <h2 id="install-title">Четыре шага</h2>
+          <div class="install-timeline">
+            <div class="install-step"><span class="install-step__dot">01</span><div><h3>Сверьте версию</h3><p>Мод, Minecraft и загрузчик должны быть одной совместимой версии.</p></div></div>
+            <div class="install-step"><span class="install-step__dot">02</span><div><h3>Установите загрузчик</h3><p>Используйте загрузчик, указанный в карточке обязательного мода.</p></div></div>
+            <div class="install-step"><span class="install-step__dot">03</span><div><h3>Переместите файл</h3><p>Поместите скачанный файл <code>.jar</code> в папку <code>.minecraft/mods</code>.</p></div></div>
+            <div class="install-step"><span class="install-step__dot">04</span><div><h3>Запустите профиль</h3><p>Выберите созданный профиль и проверьте мод в меню клиента.</p></div></div>
+          </div>
+        </article>
+
+        <article class="card card--padded">
+          <p class="eyebrow">Проверка</p>
+          <h2>Всё установлено верно, если…</h2>
+          <ul class="check-list">
+            <li>Клиент запускается без сообщения о несовместимости.</li>
+            <li>Мод виден в списке установленных модификаций.</li>
+            <li>Его версия соответствует версии сервера.</li>
+            <li>При входе сервер не сообщает об отсутствующем моде.</li>
+          </ul>
+          <div class="callout callout--success" style="margin-top: 20px">
+            <span class="callout__icon">✓</span>
+            <div><strong>Готово</strong><p>После этой проверки можно переходить к подключению.</p></div>
+          </div>
+        </article>
+      </section>
+
+      <section class="section-block" aria-labelledby="safety-title" data-reveal>
+        <div class="section-heading">
+          <div><p class="eyebrow">Безопасность</p><h2 id="safety-title">Важно помнить</h2></div>
+        </div>
+        <div class="grid-3">
+          <article class="card feature-card"><span class="feature-card__number">A</span><h3>Официальный источник</h3><p>Не скачивайте пересобранные файлы из личных сообщений и неизвестных архивов.</p></article>
+          <article class="card feature-card"><span class="feature-card__number">B</span><h3>Без дубликатов</h3><p>Оставляйте в папке <code>mods</code> только одну актуальную версию обязательного мода.</p></article>
+          <article class="card feature-card"><span class="feature-card__number">C</span><h3>Своя сборка</h3><p>Сделайте отдельный профиль ExoLand — так моды других серверов не будут конфликтовать.</p></article>
+        </div>
+      </section>
+    </main>
+
+    <div id="pager-mount"></div>
+    <div id="footer-mount"></div>
+  </div>
+
+  <div id="search-mount"></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

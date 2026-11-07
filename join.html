@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07101f">
+  <meta name="description" content="Как присоединиться к Minecraft-серверу ExoLand: версия, обязательный мод и порядок подключения.">
+  <title>Как присоединиться — ExoLand WIKI</title>
+  <link rel="icon" type="image/png" href="Source/EL.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="join">
+  <a class="skip-link" href="#main-content">Перейти к содержанию</a>
+  <div id="sidebar-mount"></div>
+  <div class="sidebar-backdrop" data-sidebar-close></div>
+
+  <div class="page-shell">
+    <div id="topbar-mount"></div>
+
+    <main class="content" id="main-content" tabindex="-1">
+      <header class="article-heading" data-reveal>
+        <span class="article-heading__index" aria-hidden="true">01</span>
+        <p class="eyebrow">Быстрый старт</p>
+        <h1>Как присоединиться?</h1>
+        <p class="lead">Три шага — и вы готовы войти в мир. Перед запуском сверьте версию игры и обязательный мод.</p>
+      </header>
+
+      <section class="card connection-card" data-address-state aria-labelledby="address-title" data-reveal>
+        <div>
+          <small id="address-title">Адрес сервера</small>
+          <div class="connection-address" data-config="server.address">Будет объявлен</div>
+          <div class="connection-meta">
+            <span class="meta-chip">Версия: <span data-config="server.version">будет объявлена</span></span>
+            <span class="meta-chip">Доступ: <span data-config="server.access">будет объявлен</span></span>
+          </div>
+        </div>
+        <button class="copy-button" type="button" data-copy-server>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="11" height="11" rx="2"></rect><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path></svg>
+          Копировать IP
+        </button>
+      </section>
+
+      <div class="callout callout--warning" style="margin-top: 16px" data-reveal>
+        <span class="callout__icon">!</span>
+        <div><strong>Данные подключения ещё готовятся</strong><p>Финальный IP, версия и формат доступа появятся здесь перед открытием сервера.</p></div>
+      </div>
+
+      <section class="section-block" aria-labelledby="steps-title" data-reveal>
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Подготовка</p>
+            <h2 id="steps-title">Порядок подключения</h2>
+          </div>
+        </div>
+
+        <div class="steps">
+          <article class="card step-card">
+            <h3>Подготовьте игру</h3>
+            <p>Установите Minecraft версии <strong data-config="server.version">будет объявлена</strong>. Не входите с другой версии — клиент может не увидеть сервер.</p>
+          </article>
+          <article class="card step-card">
+            <h3>Добавьте один мод</h3>
+            <p>Установите обязательный мод <strong data-config="requiredMod.name">будет объявлен</strong> и подходящий загрузчик. Остальные моды — по желанию.</p>
+          </article>
+          <article class="card step-card">
+            <h3>Добавьте сервер</h3>
+            <p>Откройте «Сетевая игра» → «Добавить сервер», вставьте адрес из блока выше и завершите требуемый формат доступа.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-block grid-2" aria-label="Проверка перед входом" data-reveal>
+        <article class="card card--padded">
+          <p class="eyebrow">Перед запуском</p>
+          <h2>Короткий чек-лист</h2>
+          <ul class="check-list">
+            <li>Версия Minecraft совпадает с указанной на этой странице.</li>
+            <li>Обязательный мод отображается в списке модов клиента.</li>
+            <li>Ник и скин соответствуют правилам сообщества.</li>
+            <li>Вы прочитали основные правила до первого входа.</li>
+          </ul>
+        </article>
+
+        <article class="card card--padded">
+          <p class="eyebrow">Первые минуты</p>
+          <h2>Что делать в мире?</h2>
+          <ul class="check-list">
+            <li>Осмотритесь на точке появления и прочитайте объявления.</li>
+            <li>Выберите свободное направление, не занимая чужую территорию.</li>
+            <li>Познакомьтесь с соседями до масштабного строительства.</li>
+            <li>Сохраните координаты базы и придумайте первую маленькую цель.</li>
+          </ul>
+          <div class="button-row">
+            <a class="button button--secondary" href="rules.html">Открыть правила</a>
+          </div>
+        </article>
+      </section>
+
+      <section class="section-block card card--padded" aria-labelledby="problem-title" data-reveal>
+        <p class="eyebrow">Если не получается</p>
+        <h2 id="problem-title">Сервер не отображается?</h2>
+        <div class="grid-3">
+          <div><h3>«Несовместимая версия»</h3><p style="color: var(--muted)">Проверьте номер версии Minecraft и профиль запуска.</p></div>
+          <div><h3>Ошибка модификации</h3><p style="color: var(--muted)">Сверьте версию мода и указанный загрузчик, удалите дубликаты.</p></div>
+          <div><h3>Нет доступа</h3><p style="color: var(--muted)">Проверьте формат доступа и статус заявки в сообществе проекта.</p></div>
+        </div>
+      </section>
+    </main>
+
+    <div id="pager-mount"></div>
+    <div id="footer-mount"></div>
+  </div>
+
+  <div id="search-mount"></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07101f">
+  <meta name="description" content="Желательные клиентские моды для ExoLand: производительность, графика и удобство интерфейса.">
+  <title>Желательные моды — ExoLand WIKI</title>
+  <link rel="icon" type="image/png" href="Source/EL.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="recommended-mods">
+  <a class="skip-link" href="#main-content">Перейти к содержанию</a>
+  <div id="sidebar-mount"></div>
+  <div class="sidebar-backdrop" data-sidebar-close></div>
+
+  <div class="page-shell">
+    <div id="topbar-mount"></div>
+
+    <main class="content" id="main-content" tabindex="-1">
+      <header class="article-heading" data-reveal>
+        <span class="article-heading__index" aria-hidden="true">03</span>
+        <p class="eyebrow">Необязательная сборка</p>
+        <h1>Желательные моды</h1>
+        <p class="lead">Небольшой набор для плавной игры и удобного интерфейса. Эти моды не дают преимущества и не требуются для входа.</p>
+      </header>
+
+      <div class="callout callout--success" data-reveal>
+        <span class="callout__icon">✓</span>
+        <div><strong>Весь список ниже — по желанию</strong><p>Без этих модов можно полноценно играть. Всегда скачивайте версию под свой Minecraft и загрузчик.</p></div>
+      </div>
+
+      <section class="section-block" aria-labelledby="mods-title" data-reveal>
+        <div class="section-heading">
+          <div><p class="eyebrow">Подборка клиента</p><h2 id="mods-title">Выберите нужное</h2></div>
+          <p>Фильтр помогает быстро найти моды по назначению.</p>
+        </div>
+
+        <div class="filter-bar" aria-label="Фильтр модов">
+          <button class="filter-button is-active" type="button" data-mod-filter="all">Все</button>
+          <button class="filter-button" type="button" data-mod-filter="performance">Производительность</button>
+          <button class="filter-button" type="button" data-mod-filter="visual">Графика</button>
+          <button class="filter-button" type="button" data-mod-filter="interface">Интерфейс</button>
+        </div>
+
+        <div class="mods-grid">
+          <article class="card mod-card" data-mod-kind="performance">
+            <div class="mod-card__top"><span class="mod-card__icon">S</span><span class="tag tag--performance">производительность</span></div>
+            <h3>Sodium</h3>
+            <p>Оптимизирует отрисовку мира и обычно заметно повышает FPS без изменения механик игры.</p>
+            <span class="mod-card__note">Проверьте совместимость с загрузчиком</span>
+          </article>
+
+          <article class="card mod-card" data-mod-kind="performance">
+            <div class="mod-card__top"><span class="mod-card__icon">L</span><span class="tag tag--performance">производительность</span></div>
+            <h3>Lithium</h3>
+            <p>Улучшает производительность внутренних вычислений Minecraft и помогает сделать клиент стабильнее.</p>
+            <span class="mod-card__note">Не меняет ванильное поведение</span>
+          </article>
+
+          <article class="card mod-card" data-mod-kind="visual">
+            <div class="mod-card__top"><span class="mod-card__icon">I</span><span class="tag tag--visual">графика</span></div>
+            <h3>Iris Shaders</h3>
+            <p>Добавляет поддержку шейдеров и работает вместе с Sodium. Используйте только при достаточной мощности ПК.</p>
+            <span class="mod-card__note">Сами шейдеры устанавливаются отдельно</span>
+          </article>
+
+          <article class="card mod-card" data-mod-kind="visual">
+            <div class="mod-card__top"><span class="mod-card__icon">DL</span><span class="tag tag--visual">графика</span></div>
+            <h3>LambDynamicLights</h3>
+            <p>Создаёт динамический свет от факелов и других источников в руках, не меняя мир на сервере.</p>
+            <span class="mod-card__note">Косметическое изменение клиента</span>
+          </article>
+
+          <article class="card mod-card" data-mod-kind="interface">
+            <div class="mod-card__top"><span class="mod-card__icon">A</span><span class="tag tag--interface">интерфейс</span></div>
+            <h3>AppleSkin</h3>
+            <p>Показывает насыщение и более точную информацию о еде прямо в привычном интерфейсе.</p>
+            <span class="mod-card__note">Полезен в начале выживания</span>
+          </article>
+
+          <article class="card mod-card" data-mod-kind="interface">
+            <div class="mod-card__top"><span class="mod-card__icon">M</span><span class="tag tag--interface">интерфейс</span></div>
+            <h3>Mod Menu</h3>
+            <p>Собирает список установленных модов и их настройки в одном аккуратном меню клиента.</p>
+            <span class="mod-card__note">Удобен для проверки сборки</span>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-block grid-2" aria-label="Совместимость и честная игра" data-reveal>
+        <article class="card card--padded">
+          <p class="eyebrow">Совместимость</p>
+          <h2>Перед установкой</h2>
+          <ul class="check-list">
+            <li>Сверьте версию Minecraft у каждого файла.</li>
+            <li>Не смешивайте моды для разных загрузчиков.</li>
+            <li>Добавляйте моды по одному и запускайте игру.</li>
+            <li>Храните резервную копию рабочей сборки.</li>
+          </ul>
+        </article>
+        <article class="card card--padded">
+          <p class="eyebrow">Честная игра</p>
+          <h2>Что не подходит</h2>
+          <p style="color: var(--muted)">Запрещены модификации, которые дают информацию или возможности, недоступные обычному игроку: X-Ray, автоматизация действий, расширенный поиск сущностей, обход ограничений и подобные клиенты.</p>
+          <div class="callout callout--warning" style="margin-top: 22px">
+            <span class="callout__icon">?</span>
+            <div><strong>Сомневаетесь в моде?</strong><p>Сначала спросите администрацию и только потом заходите с ним на сервер.</p></div>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <div id="pager-mount"></div>
+    <div id="footer-mount"></div>
+  </div>
+
+  <div id="search-mount"></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
