@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1420">
+  <meta name="description" content="Обязательный мод ExoEvents для подключения к Minecraft-серверу ExoLand.">
+  <title>Обязательный мод — ExoLand WIKI</title>
+  <link rel="icon" type="image/png" href="Source/EL.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="required-mod">
+  <a class="skip-link" href="#main-content">Перейти к содержанию</a>
+  <div id="sidebar-mount"></div>
+  <div class="sidebar-backdrop" data-sidebar-close></div>
+
+  <div class="page-shell">
+    <div id="topbar-mount"></div>
+
+    <main class="content" id="main-content" tabindex="-1">
+      <header class="document-header" data-reveal>
+        <div>
+          <p class="eyebrow">Подготовка клиента</p>
+          <h1>Обязательный мод</h1>
+          <p class="lead">Для подключения к ExoLand необходимо установить один клиентский мод — <strong>ExoEvents</strong>. Остальные модификации используются по желанию.</p>
+        </div>
+        <div class="requirement-value" aria-label="Количество обязательных модов">
+          <strong>1</strong><span>обязательный<br>мод</span>
+        </div>
+      </header>
+
+      <div class="callout callout--warning" data-reveal>
+        <span class="callout__icon" aria-hidden="true">!</span>
+        <div><strong>ExoEvents обязателен для входа</strong><p>Без установленного мода клиент не сможет полноценно подключиться к серверу.</p></div>
+      </div>
+
+      <section class="section-block card required-mod-card required-mod-card--official" aria-labelledby="mod-name" data-reveal>
+        <div class="required-mod-card__visual" aria-hidden="true"><strong></strong><span></span></div>
+        <div>
+          <p class="eyebrow">Клиентский мод</p>
+          <h2 id="mod-name" data-config="requiredMod.name">ExoEvents</h2>
+          <p data-config="requiredMod.description">Единственный обязательный клиентский мод для подключения к ExoLand</p>
+
+          <div class="info-rows">
+            <div class="info-row"><span>Версия игры</span><strong data-config="server.version">1.21.1</strong></div>
+            <div class="info-row"><span>Версия мода</span><strong data-config="requiredMod.version">1.5.3</strong></div>
+            <div class="info-row"><span>Загрузчик</span><strong data-config="requiredMod.loader">Fabric</strong></div>
+            <div class="info-row"><span>Статус</span><strong>Обязателен для подключения</strong></div>
+          </div>
+
+          <div class="button-row">
+            <a class="button" data-config-link="requiredMod.downloadUrl" data-fallback="Ссылка недоступна">
+              <span data-link-label>Скачать ExoEvents 1.5.3</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 5h5v5M19 5l-8 8"></path><path d="M18 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"></path></svg>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-block grid-2" aria-labelledby="install-title" data-reveal>
+        <article class="card card--padded">
+          <p class="eyebrow">Установка</p>
+          <h2 id="install-title">Порядок установки</h2>
+          <div class="install-timeline">
+            <div class="install-step"><span class="install-step__dot">01</span><div><h3>Установите Fabric</h3><p>Подготовьте профиль Fabric для Minecraft 1.21.1.</p></div></div>
+            <div class="install-step"><span class="install-step__dot">02</span><div><h3>Скачайте ExoEvents</h3><p>Используйте официальную ссылку из карточки выше.</p></div></div>
+            <div class="install-step"><span class="install-step__dot">03</span><div><h3>Переместите файл</h3><p>Поместите <code>ExoEvents-1.5.3.jar</code> в папку <code>.minecraft\mods</code>.</p></div></div>
+            <div class="install-step"><span class="install-step__dot">04</span><div><h3>Запустите игру</h3><p>Выберите профиль Fabric 1.21.1 и убедитесь, что мод загрузился без ошибок.</p></div></div>
+          </div>
+        </article>
+
+        <article class="card card--padded">
+          <p class="eyebrow">Проверка</p>
+          <h2>Перед подключением</h2>
+          <ul class="check-list">
+            <li>Используется Minecraft версии 1.21.1.</li>
+            <li>Установлен совместимый загрузчик Fabric.</li>
+            <li>Файл ExoEvents находится в папке <code>mods</code>.</li>
+            <li>В папке нет устаревшей копии ExoEvents.</li>
+          </ul>
+          <div class="button-row">
+            <a class="button button--secondary" href="recommended-mods.html">Дополнительные модификации</a>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <div id="pager-mount"></div>
+    <div id="footer-mount"></div>
+  </div>
+
+  <div id="search-mount"></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
