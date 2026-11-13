@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1420">
+  <meta name="description" content="Официальная инструкция по подключению к Minecraft-серверу ExoLand.">
+  <title>Как присоединиться — ExoLand WIKI</title>
+  <link rel="icon" type="image/png" href="Source/EL.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="join">
+  <a class="skip-link" href="#main-content">Перейти к содержанию</a>
+  <div id="sidebar-mount"></div>
+  <div class="sidebar-backdrop" data-sidebar-close></div>
+
+  <div class="page-shell">
+    <div id="topbar-mount"></div>
+
+    <main class="content" id="main-content" tabindex="-1">
+      <header class="document-header" data-reveal>
+        <div>
+          <p class="eyebrow">Подключение к серверу</p>
+          <h1>Как присоединиться?</h1>
+          <p class="lead">Подготовьте Minecraft 26.2, установите обязательный мод ExoEvents и выполните инструкцию по подключению.</p>
+        </div>
+      </header>
+
+      <section class="card connection-card connection-card--official" data-address-state aria-labelledby="address-title" data-reveal>
+        <div>
+          <small id="address-title">IP-адрес сервера</small>
+          <div class="connection-address" data-config="server.address">Отсутствует</div>
+          <div class="connection-meta">
+            <span class="meta-chip">Версия: <span data-config="server.version">26.2</span></span>
+          </div>
+        </div>
+        <button class="copy-button" type="button" data-copy-server>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="11" height="11" rx="2"></rect><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path></svg>
+          Копировать IP
+        </button>
+      </section>
+
+      <section class="section-block" aria-labelledby="access-title" data-reveal>
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Доступ к серверу</p>
+            <h2 id="access-title">Получение проходки</h2>
+          </div>
+        </div>
+        <p class="access-unavailable">Недоступно</p>
+      </section>
+
+      <section class="section-block" aria-labelledby="connect-title" data-reveal>
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Порядок действий</p>
+            <h2 id="connect-title">Подключение к серверу</h2>
+          </div>
+        </div>
+
+        <ol class="connection-steps">
+          <li class="card">
+            <span class="connection-steps__number">01</span>
+            <div><h3>Обязательный мод</h3><p>Установите ExoEvents 1.6.2 для Minecraft 26.2. <a class="inline-link" href="required-mod.html">Открыть инструкцию</a>.</p></div>
+          </li>
+          <li class="card">
+            <span class="connection-steps__number">02</span>
+            <div><h3>Ресурс-пак</h3><p>Установите ресурс-пак ExoLand по желанию. Если не устанавливать его вручную, он загрузится автоматически при входе на сервер.</p></div>
+          </li>
+          <li class="card">
+            <span class="connection-steps__number">03</span>
+            <div><h3>Версия игры</h3><p>Выберите версию <strong>Minecraft 26.2</strong> в лаунчере.</p></div>
+          </li>
+          <li class="card">
+            <span class="connection-steps__number">04</span>
+            <div><h3>Адрес сервера</h3><p>Добавьте сервер и укажите IP-адрес: <strong data-config="server.address">Отсутствует</strong>.</p></div>
+          </li>
+          <li class="card">
+            <span class="connection-steps__number">05</span>
+            <div><h3>Регистрация</h3><p>После входа зарегистрируйтесь командой <code>/register &lt;пароль&gt; &lt;повторный пароль&gt;</code> или сокращённой командой <code>/reg</code>.</p></div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="section-block" aria-labelledby="social-title" data-reveal>
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Официальные ресурсы</p>
+            <h2 id="social-title">Социальные сети</h2>
+          </div>
+          <p>Новости, изменения доступа и технические объявления публикуются только в официальных сообществах.</p>
+        </div>
+
+        <div class="social-links">
+          <a class="card social-link" href="https://discord.gg/ZCbsRNQCqw" target="_blank" rel="noopener noreferrer">
+            <span class="social-link__mark">D</span>
+            <span><small>Сообщество</small><strong>Discord-сервер</strong><em>discord.gg/ZCbsRNQCqw</em></span>
+            <span aria-hidden="true">↗</span>
+          </a>
+          <a class="card social-link" href="https://t.me/ExoLandV" target="_blank" rel="noopener noreferrer">
+            <span class="social-link__mark">T</span>
+            <span><small>Новости проекта</small><strong>Telegram-канал</strong><em>t.me/ExoLandV</em></span>
+            <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <div id="pager-mount"></div>
+    <div id="footer-mount"></div>
+  </div>
+
+  <div id="search-mount"></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
